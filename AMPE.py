@@ -331,12 +331,9 @@ class ConvertDialog(wx.Dialog):
         # end wxGlade
     
     def OnCancel(self, e):
- #       try:
-        enc = Encodeo(self)
-        enc.stop()
-        print "se pudo"
- #       except:
- #           print "No se puede X.X"
+        if not button_cancel.Label == "Cerrar":
+            enc = Encodeo(self)
+            enc.stop()
         self.Destroy()
         
     def OnMin(self, e):
