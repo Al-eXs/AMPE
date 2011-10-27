@@ -21,13 +21,15 @@ AMPE:
  |  |-mplayer2.exe              Ejecutable MPlayer2 para Windows
  |  |-mplayer2-lavc             Ejecutable MPlayer2 para *nix
  |-img:
+ |  |-AMPE.ico                  Icono del ejecutable de Windows
  |  |-icon.ico                  Icono de la aplicación
  |  |-logo.png                  Logo
  |-logs:                        Carpeta para Logs de conversiones
  |-AMPE.exe                     Ejecutable para Windows
  |-AMPE                         Ejecutable para *nix
+ |-AMPE.py                      Codigo fuente del proyecto(en Python)
+ |-Converter.exe                Ejecutable llamado por AMPE.exe para la conversion
  |-README.txt                   Archivo Readme(este archivo)
- |-source.7z                    Comprimido con el codigo fuente(Python)
 
 =============================
 
