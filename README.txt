@@ -27,9 +27,10 @@ AMPE:
  |-logs:                        Carpeta para Logs de conversiones
  |-AMPE.exe                     Ejecutable para Windows
  |-AMPE                         Ejecutable para *nix
- |-AMPE.py                      Codigo fuente del proyecto(en Python)
  |-Converter.exe                Ejecutable llamado por AMPE.exe para la conversion
  |-README.txt                   Archivo Readme(este archivo)
+ |-src:
+ |  |-AMPE.py                   Codigo fuente del proyecto(en Python)
 
 =============================
 
