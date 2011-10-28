@@ -223,7 +223,7 @@ class AMPEclass(wx.Frame):
         if self.radio_192.Value == 1: audio = "192k"
         
         if platform.system() == 'Windows': mp2 = "mplayer2.exe"
-        if platform.system() == 'Linux' : mp2 = "mplayer2"
+        if platform.system() == 'Linux' : mp2 = "mplayer2-lavc"
         
         global encodear
         encodear = []
@@ -233,8 +233,12 @@ class AMPEclass(wx.Frame):
         for i in range(len(paths)):
             input = paths[i]
             output = paths[i][:-3]
-            encodear.append(folderrun + u"\\bin\\" + mp2 + ' "' + input + '" -o "' + output + formato + bitrate + bit2 + audio + resolucion)
-            logfile.append(folderrun + "\\logs\\" + filenames[i] + "-to-" + format + ".log")
+            if platform.system() == 'Windows':
+                encodear.append(folderrun + u"\\bin\\" + mp2 + ' "' + input + '" -o "' + output + formato + bitrate + bit2 + audio + resolucion)
+                logfile.append(folderrun + "\\logs\\" + filenames[i] + "-to-" + format + ".log")
+            if platform.system() == 'Linux':
+                encodear.append(folderrun + u"/bin/" + mp2 + ' "' + input + '" -o "' + output + formato + bitrate + bit2 + audio + resolucion)
+                logfile.append(folderrun + "/logs/" + filenames[i] + "-to-" + format + ".log")
         
         convertir = Encodeo(self)
         convertir.start()
@@ -243,10 +247,10 @@ class AMPEclass(wx.Frame):
         
 
     def OnAbout(self, e):
-        description1 = u"AMPE (Al_eXs MPlayer2 Encoder) es una Interfaz Gráfica de Usuario(GUI)\n"
-        description2 = u"para encodear videos MKV, MP4 o AVI en MP4 o AVI compatibles con\n"
-        description3 = u"las consolas usando como fuente para encodear el MPlayer2.\n\n"
-        description4 = u"Acepta estilos y enlaza los capitulos con Ordered Chapters Externos.\n\n"
+        description1 = u"AMPE (Al_eXs MPlayer2 Encoder) es una Interfaz Gráfica de\n"
+        description2 = u"Usuario(GUI) para encodear videos MKV, MP4 o AVI en MP4 o\n"
+        description3 = u"AVI compatibles con las consolas usando como fuente para\n"
+        description4 = u"encodear el MPlayer2.\n\nAcepta estilos y enlaza los capitulos con\nOrdered Chapters Externos.\n\n"
         description5 = u"Agradecimientos:\n-ErunamoJAZZ, por su apoyo en mejorar mi codigo python\n"
         description = description1 + description2 + description3 + description4 + description5
         licence1 = u"AMPE es un sofware libre; se puede redistribuir y/o modificar\n"
@@ -255,7 +259,8 @@ class AMPEclass(wx.Frame):
         licence4 = u"pero SIN GARANTIA ALGUNA."
         licence = licence1 + licence2 + licence3 + licence4
         info = wx.AboutDialogInfo()
-        info.SetIcon(wx.Icon("./img/logo.png", wx.BITMAP_TYPE_PNG))
+        if platform.system() == 'Linux': info.SetIcon(wx.Icon(folderrun + "/img/logo.png", wx.BITMAP_TYPE_PNG))
+        if platform.system() == 'Windows': info.SetIcon(wx.Icon(folderrun + "\\img\\logo.png", wx.BITMAP_TYPE_PNG))
         info.SetName("AMPE")
         info.SetVersion("0.1.0")
         info.SetDescription(description)
@@ -334,6 +339,9 @@ class ConvertDialog(wx.Dialog):
         if not button_cancel.Label == "Cerrar":
             enc = Encodeo(self)
             enc.stop()
+            self.padre.button_eliminar.Enable(True)
+            self.padre.elim.Enable(True)
+            self.padre.button_convertir.Enable(True)
         self.Destroy()
         
     def OnMin(self, e):
@@ -355,8 +363,12 @@ class Encodeo(threading.Thread):
            # print i
             cap = "Capitulo: " + str(filenames[i])
             tot = str(i+1) + " de " + str(len(filenames))
-            label_capi.Label = cap
-            label_total.Label = tot
+            if platform.system() == 'Linux':
+                print cap
+                print tot
+            if platform.system() == 'Windows':
+                label_capi.Label = cap
+                label_total.Label = tot
             self.proceso = subprocess.Popen(encodear[i], stdout = open(logfile[i], "a"), stderr = open(logfile[i], "a"), shell = True).wait()
            # print i
             if salir:
