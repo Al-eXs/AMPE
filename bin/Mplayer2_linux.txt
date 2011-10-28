@@ -1,4 +1,3 @@
-no hay version compilada del mplayer2-lavc
+http://www.mediafire.com/?kweif3nieexo3uw
 
-hay que compilarla uno mismo pero ya no esta disponible la
-repo GIT donde estaba, y no encuentro otra...
+extraer en AMPE/bin/
