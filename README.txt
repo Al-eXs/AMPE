@@ -47,7 +47,5 @@ Versión 0.1.0:
 Mejoras en proceso:
  -Configuración individual de los archivos.
  -Encodeo a 2 pasadas.
- -Barras de progreso.
- -Cancelacion correcta del proceso de encodeo una vez iniciado.
  -Bugfix que resulten.
 

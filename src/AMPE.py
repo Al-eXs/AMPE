@@ -239,7 +239,8 @@ class AMPEclass(wx.Frame):
             if platform.system() == 'Linux':
                 encodear.append(folderrun + u"/bin/" + mp2 + ' "' + input + '" -o "' + output + formato + bitrate + bit2 + audio + resolucion)
                 logfile.append(folderrun + "/logs/" + filenames[i] + "-to-" + format + ".log")
-        
+        global salir
+        salir = False
         convertir = Encodeo(self)
         convertir.start()
         frame2 = ConvertDialog(self)
@@ -251,8 +252,9 @@ class AMPEclass(wx.Frame):
         description2 = u"Usuario(GUI) para encodear videos MKV, MP4 o AVI en MP4 o\n"
         description3 = u"AVI compatibles con las consolas usando como fuente para\n"
         description4 = u"encodear el MPlayer2.\n\nAcepta estilos y enlaza los capitulos con\nOrdered Chapters Externos.\n\n"
-        description5 = u"Agradecimientos:\n-ErunamoJAZZ, por su apoyo en mejorar mi codigo python\n"
-        description = description1 + description2 + description3 + description4 + description5
+        description5 = u"Agradecimientos:\n-ErunamoJAZZ(AnS), por su apoyo en mejorar mi codigo python\n"
+        description6 = u"-Batousay(BB), por su tip para las barras de progreso\n"
+        description = description1 + description2 + description3 + description4 + description5 + description6
         licence1 = u"AMPE es un sofware libre; se puede redistribuir y/o modificar\n"
         licence2 = u"bajo los terminos de la Licencia Publica General GNU Version 3.\n"
         licence3 = u"AMPE es distribuido con la esperanza de ser un software util\n"
@@ -282,13 +284,15 @@ class ConvertDialog(wx.Dialog):
         kwds["style"] = wx.SYSTEM_MENU | wx.CAPTION | wx.CLOSE_BOX
         wx.Dialog.__init__(self, None, -1, title="Convirtiendo")
         self.label_1a = wx.StaticText(self, -1, "Convirtiendo:")
-        global label_capi
-        label_capi = wx.StaticText(self, -1, "")#nombre del capi
-#        self.gauge_2a = wx.Gauge(self, -1, 10)
+ #       global label_capi
+ #       label_capi = wx.StaticText(self, -1, "")#nombre del capi
+        global gauge_2a
+        gauge_2a = wx.Gauge(self, -1, 100)
         self.label_2a = wx.StaticText(self, -1, "Progreso Total:")
         global label_total
-        label_total = wx.StaticText(self, -1, "")
-#        self.gauge_1a = wx.Gauge(self, -1, 10)
+#        label_total = wx.StaticText(self, -1, "")
+        global gauge_1a
+        gauge_1a = wx.Gauge(self, -1, 100)
         global button_minimize
         button_minimize = wx.Button(self, -1, "Minimizar")
         global button_cancel
@@ -307,8 +311,8 @@ class ConvertDialog(wx.Dialog):
         # begin wxGlade: ConvertDialog.__set_properties
         self.SetTitle("Convirtiendo")
         self.SetSize((500, 200))
-#        self.gauge_2a.SetMinSize((450, 15))
-#        self.gauge_1a.SetMinSize((450, 15))
+        gauge_2a.SetMinSize((450, 15))
+        gauge_1a.SetMinSize((450, 15))
         # end wxGlade
 
     def __do_layout(self):
@@ -319,12 +323,12 @@ class ConvertDialog(wx.Dialog):
         sizer_4a = wx.BoxSizer(wx.VERTICAL)
         sizer_3a = wx.BoxSizer(wx.VERTICAL)
         sizer_3a.Add(self.label_1a, 0, wx.BOTTOM, 10)
-        sizer_3a.Add(label_capi, 0, 0, 0)
-#        sizer_3a.Add(self.gauge_2a, 0, 0, 0)
+#        sizer_3a.Add(label_capi, 0, 0, 0)
+        sizer_3a.Add(gauge_2a, 0, 0, 0)
         sizer_2a.Add(sizer_3a, 0, wx.LEFT|wx.TOP, 20)
         sizer_4a.Add(self.label_2a, 0, wx.BOTTOM, 10)
-        sizer_4a.Add(label_total, 0, 0, 0)
- #       sizer_4a.Add(self.gauge_1a, 0, 0, 0)
+#        sizer_4a.Add(label_total, 0, 0, 0)
+        sizer_4a.Add(gauge_1a, 0, 0, 0)
         sizer_2a.Add(sizer_4a, 0, wx.LEFT|wx.TOP|wx.BOTTOM, 20)
         sizer_5a.Add(button_minimize, 0, 0, 0)
         sizer_5a.Add(button_cancel, 0, wx.LEFT, 120)
@@ -337,6 +341,7 @@ class ConvertDialog(wx.Dialog):
     
     def OnCancel(self, e):
         if not button_cancel.Label == "Cerrar":
+            salir = True
             enc = Encodeo(self)
             enc.stop()
             self.padre.button_eliminar.Enable(True)
@@ -350,62 +355,71 @@ class ConvertDialog(wx.Dialog):
 
         
 class Encodeo(threading.Thread):
-    def __init__(self, _wxText):
+    def __init__(self, e):
         threading.Thread.__init__(self)
  #       self.setDaemon(True)
         
     def run(self):
-        salir = False
+        global i
         i = 0
         while True:
-           # print i
-            time.sleep(3)
-           # print i
             cap = "Capitulo: " + str(filenames[i])
             tot = str(i+1) + " de " + str(len(filenames))
-            if platform.system() == 'Linux':
-                print cap
-                print tot
-            if platform.system() == 'Windows':
-                label_capi.Label = cap
-                label_total.Label = tot
-            self.proceso = subprocess.Popen(encodear[i], stdout = open(logfile[i], "a"), stderr = open(logfile[i], "a"), shell = True).wait()
-           # print i
+            print cap
+            print tot
+            try:
+                os.remove(logfile[i])
+            except:
+                pass
+            self.proceso = subprocess.Popen(encodear[i], stdout = open(logfile[i], "a"), stderr = open(logfile[i], "a"), shell = True)
+            bars = Barras(self)
+            bars.start()
+            self.proceso.wait()
+            time.sleep(3)
             if salir:
               #  print "out"
                 break
             if i==len(filenames)-1:
-               # print "fuera"
+               # print "terminado"
                 break
             i +=1
         
-        button_cancel.Label = "Cerrar"
-        button_minimize.Enable(False)
-        Lista.Clear()
+        try:
+            button_cancel.Label = "Cerrar"
+            button_minimize.Enable(False)
+            Lista.Clear()
+        except:
+            pass
     
     def stop(self):
         salir = True
-        self.proceso.terminate()
+        if platform.system() == 'Linux': self.kill = subprocess.Popen("killall mplayer2-lavc", shell = True)
+        if platform.system() == 'Windows': self.kill = subprocess.Popen("taskkill /F /IM mplayer2.exe", shell = True)
 
 
-'''        
-class Barras(AMPEclass):
-    def __init__(parent):
-        self.padre = parent
-        
-    def run():
+       
+class Barras(threading.Thread):
+    def __init__(self, e):
+        threading.Thread.__init__(self)
+       
+    def run(self):
         while True:
-            time.sleep(2)
-            prs = open(self.padre.logfile, "r")
+            time.sleep(3)
+            prs = open(logfile[i], "r")
             for last in prs:
-                porcentaje=last
-            ConverDialog().gauge_2a.SetValue(porcentaje[-38:-36])
-            print porcentaje[-38:-36]
-            if not self.corriendo:
+                porcentaje = last
+            porcentaje = str(porcentaje)
+#            print porcentaje[-80:-10]
+            a = porcentaje[-80:-10].split('{')
+#            print a
+            b = a[1].split('%')
+#            print b
+#            print b[0]
+            gauge_2a.SetValue(float(b[0])+3)
+            c = float(b[0])/len(filenames)
+            gauge_1a.SetValue(c+(100*i/len(filenames))+3)
+            if salir:
                 break
-    def kill():
-        self.corriendo = False
-'''
 
 class AMPEapp(wx.App):
     def OnInit(self):
