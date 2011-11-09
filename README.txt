@@ -19,15 +19,15 @@ AMPE:
  |  |    |-config               Configuración del MPlayer2(lo genera al ejecutarse por primera vez)
  |  |    |-subfont.ttf          Fuente por defecto
  |  |-mplayer2.exe              Ejecutable MPlayer2 para Windows
- |  |-mplayer2-lavc             Ejecutable MPlayer2 para *nix
+ |  |-mplayer2-lavc             Ejecutable MPlayer2 para Linux
  |-img:
  |  |-AMPE.ico                  Icono del ejecutable de Windows
  |  |-icon.ico                  Icono de la aplicación
  |  |-logo.png                  Logo
  |-logs:                        Carpeta para Logs de conversiones
  |-AMPE.exe                     Ejecutable para Windows
- |-AMPE                         Ejecutable para *nix
- |-Converter.exe                Ejecutable llamado por AMPE.exe para la conversion
+ |-AMPE                         Ejecutable para Linux
+ |-Converter.exe                Ejecutable usado por AMPE.exe para la conversion
  |-README.txt                   Archivo Readme(este archivo)
  |-src:
  |  |-AMPE.py                   Codigo fuente del proyecto(en Python)
