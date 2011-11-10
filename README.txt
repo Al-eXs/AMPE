@@ -1,5 +1,10 @@
 AMPE - Al_eXs' MPlayer2 Encoder
+
+Repositorio GIT:
 https://github.com/Al-eXs/AMPE
+
+Descarga Directa:
+http://www.mediafire.com/?wkbak3f22zlb50v
 
 =============================
 

@@ -1,3 +1,3 @@
-http://mplayer2.srsfckn.biz/mplayer2-vo-lavc-latest.7z
+http://www.mediafire.com/?31s9gpqh0waidd3
 
-extraer en AMPE/bin/ y renombrar el ejecutable a mplayer2.exe
+extraer en AMPE/bin/
