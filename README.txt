@@ -3,9 +3,6 @@ AMPE - Al_eXs' MPlayer2 Encoder
 Repositorio GIT:
 https://github.com/Al-eXs/AMPE
 
-Descarga Directa:
-http://www.mediafire.com/?qvs2hw1kg681rjd
-
 =============================
 
 AMPE es una GUI(Graphic User Interface) para usar las opciones de encodeo

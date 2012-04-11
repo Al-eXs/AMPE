@@ -18,7 +18,7 @@ folderrun = unicode(os.getcwd(), 'utf8')
 class AMPEclass(wx.Frame):
     def __init__(self, *args, **kwds):
         # begin wxGlade: AMPEclass.__init__
-        kwds["style"] = wx.MINIMIZE_BOX | wx.SYSTEM_MENU | wx.CAPTION |	wx.CLOSE_BOX
+        kwds["style"] = wx.MINIMIZE_BOX | wx.SYSTEM_MENU | wx.CAPTION |	wx.CLOSE_BOX | wx.TRANSPARENT_WINDOW
         wx.Frame.__init__(self, *args, **kwds)
         self.sizer_9_staticbox = wx.StaticBox(self, -1, u"Video")
         self.sizer_10_staticbox = wx.StaticBox(self, -1, u"Audio")
@@ -147,7 +147,8 @@ class AMPEclass(wx.Frame):
         self.Layout()
         self.Centre()
         # end wxGlade
-        
+
+
     def OnLogDel(self, e):
         if platform.system() == 'Windows':
             for each in os.listdir(folderrun + '\\logs'):
@@ -265,17 +266,17 @@ class AMPEclass(wx.Frame):
             input = paths[i]
             output = paths[i][:-3]
             if platform.system() == 'Windows':
-                encodear.append(folderrun + u"\\bin\\" + mp2 + u' "' + win32api.GetShortPathName(unicode(input,'utf-8')) + u'" -o "' + unicode(output,'utf-8') + formato + bitrate + bit2 + audio + resolucion)
-                logfile.append(folderrun + u"\\logs\\" + unicode(filenames[i],'utf-8') + u"-to-" + format + u".log")
+                encodear.append(u'"' + folderrun + u'\\bin\\' + mp2 + u'" "' + win32api.GetShortPathName(unicode(input,'utf-8')) + u'" -o "' + unicode(output,'utf-8') + formato + bitrate + bit2 + audio + resolucion)
+                logfile.append(folderrun + u'\\logs\\' + unicode(filenames[i],'utf-8') + u'-to-' + format + u'.log')
             if platform.system() == 'Linux':
-                encodear.append(folderrun + u"/bin/" + mp2 + u' "' + unicode(input,'utf-8') + u'" -o "' + unicode(output,'utf-8') + formato + bitrate + bit2 + audio + resolucion)
-                logfile.append(folderrun + u"/logs/" + unicode(filenames[i],'utf-8') + u"-to-" + format + u".log")
+                encodear.append(u'"' + folderrun + u'/bin/' + mp2 + u'" "' + unicode(input,'utf-8') + u'" -o "' + unicode(output,'utf-8') + formato + bitrate + bit2 + audio + resolucion)
+                logfile.append(folderrun + u'/logs/' + unicode(filenames[i],'utf-8') + u'-to-' + format + u'.log')
         global salir
         salir = False
         convertir = Encodeo(self)
         convertir.start()
         frame2 = ConvertDialog(self)
-        frame2.ShowModal()
+        frame2.Show()
         
 
     def OnAbout(self, e):
@@ -292,8 +293,8 @@ class AMPEclass(wx.Frame):
         licence4 = u"pero SIN GARANTIA ALGUNA."
         licence = licence1 + licence2 + licence3 + licence4
         info = wx.AboutDialogInfo()
-        if platform.system() == 'Linux': info.SetIcon(wx.Icon(folderrun + "/img/logo.png", wx.BITMAP_TYPE_PNG))
-        if platform.system() == 'Windows': info.SetIcon(wx.Icon(folderrun + "\\img\\logo.png", wx.BITMAP_TYPE_PNG))
+        if platform.system() == 'Linux': info.SetIcon(wx.Icon(folderrun + '/img/logo.png', wx.BITMAP_TYPE_PNG))
+        if platform.system() == 'Windows': info.SetIcon(wx.Icon(folderrun + '\\img\\logo.png', wx.BITMAP_TYPE_PNG))
         info.SetName(u"AMPE")
         info.SetVersion(u"0.1.0")
         info.SetDescription(description)
@@ -309,11 +310,11 @@ class AMPEclass(wx.Frame):
         
 # end of class AMPEclass
 
-class ConvertDialog(wx.Dialog):
-    def __init__(self, parent, **kwds):
+class ConvertDialog(wx.Frame):
+    def __init__(self, parent, *args, **kwds):
         # begin wxGlade: ConvertDialog.__init__
-        kwds["style"] = wx.SYSTEM_MENU | wx.CAPTION | wx.CLOSE_BOX
-        wx.Dialog.__init__(self, None, -1, title=u"Convirtiendo")
+        kwds["style"] = wx.CAPTION
+        wx.Frame.__init__(self, None, -1, title = u"  Convirtiendo", **kwds)
         self.label_1a = wx.StaticText(self, -1, u"Convirtiendo:")
  #       global label_capi
  #       label_capi = wx.StaticText(self, -1, "")#nombre del capi
@@ -333,6 +334,8 @@ class ConvertDialog(wx.Dialog):
         self.Bind(wx.EVT_BUTTON, self.OnCancel, button_cancel)
         self.Bind(wx.EVT_BUTTON, self.OnMin, button_minimize)
         self.Bind(wx.EVT_CLOSE, self.OnCancel)
+
+        self.padre.Show(False)
         
         self.__set_properties()
         self.__do_layout()
@@ -378,11 +381,12 @@ class ConvertDialog(wx.Dialog):
             self.padre.button_eliminar.Enable(True)
             self.padre.elim.Enable(True)
             self.padre.button_convertir.Enable(True)
+        self.padre.Show(True)
         self.Destroy()
         
     def OnMin(self, e):
         self.Iconize(True)
-        self.padre.Iconize(True)
+#        self.padre.Iconize(True)
 
         
 class Encodeo(threading.Thread):
