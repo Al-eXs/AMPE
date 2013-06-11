@@ -49,7 +49,8 @@ class AMPEclass(wx.Frame):
         self.button_abrir = wx.Button(self, -1, u"Abrir")
         self.button_eliminar = wx.Button(self, -1, u"Eliminar")
         self.label_3 = wx.StaticText(self, -1, u"Formato:")
-        self.combo_formato = wx.ComboBox(self, -1, choices=[u" MP4", u" AVI"], style=wx.CB_DROPDOWN)
+        global combo_formato
+        combo_formato = wx.ComboBox(self, -1, choices=[u" MP4", u" AVI"], style=wx.CB_DROPDOWN)
         self.label_4 = wx.StaticText(self, -1, u"Resolución:")
         self.combo_resolucion = wx.ComboBox(self, -1, choices=[u"Mantener Original", u" 480p (4:3)", u" 480p (16:9)", u" 720p (4:3)", u" 720p (16:9)"], style=wx.CB_DROPDOWN)
         self.label_5 = wx.StaticText(self, -1, u"CRF:")
@@ -73,7 +74,7 @@ class AMPEclass(wx.Frame):
         self.Bind(wx.EVT_BUTTON, self.OnQuit, self.button_salir)
         self.Bind(wx.EVT_BUTTON, self.OnConvert, self.button_convertir)
         self.Bind(wx.EVT_LISTBOX, self.SelList, Lista)
-        self.Bind(wx.EVT_COMBOBOX, self.SelFormat, self.combo_formato)
+        self.Bind(wx.EVT_COMBOBOX, self.SelFormat, combo_formato)
         self.Bind(wx.EVT_CLOSE, self.OnQuit)
         self.__set_properties()
         self.__do_layout()
@@ -94,11 +95,11 @@ class AMPEclass(wx.Frame):
         Lista.SetMinSize((400, 200))
         self.elim.Enable(False)
         self.button_eliminar.Enable(False)
-        self.combo_formato.SetSelection(0)
+        combo_formato.SetSelection(0)
         self.combo_resolucion.SetSelection(0)
         self.slider_bitrate.SetMinSize((250, -1))
         self.spin_bitrate.SetMinSize((60, -1))
-        self.radio_160.SetValue(1)
+        self.radio_128.SetValue(1)
         self.button_convertir.Enable(False)
         self.optns.Enable(False)
         # end wxGlade
@@ -124,7 +125,7 @@ class AMPEclass(wx.Frame):
         sizer_4.Add(sizer_5, 0, wx.TOP, 20)
         sizer_3.Add(sizer_4, 0, wx.ALIGN_CENTER_HORIZONTAL, 0)
         grid_sizer_9.Add(self.label_3, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5)
-        grid_sizer_9.Add(self.combo_formato, 0, wx.TOP, 5)
+        grid_sizer_9.Add(combo_formato, 0, wx.TOP, 5)
         grid_sizer_9.Add(self.label_4, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5)
         grid_sizer_9.Add(self.combo_resolucion, 0, wx.TOP, 5)
         grid_sizer_9.Add(self.label_5, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5)
@@ -165,7 +166,7 @@ class AMPEclass(wx.Frame):
         wx.MessageBox('Los archivos de Log\nhan sido borrados.', ' Info', wx.OK | wx.ICON_INFORMATION)
 
     def SelFormat(self, e):
-        if  self.combo_formato.GetSelection() == 1:
+        if  combo_formato.GetSelection() == 1:
             self.label_5.Label = u"Bitrate:"
             self.slider_bitrate.SetRange(500, 6000)
             self.slider_bitrate.SetValue(1500)
@@ -224,12 +225,13 @@ class AMPEclass(wx.Frame):
         self.select = Lista.GetSelection()
         
     def OnConvert(self, e):
-        if self.combo_formato.GetSelection() == 0:
+        if combo_formato.GetSelection() == 0:
             formato = u'converted.mp4" -ofps 23.976 -ovc libx264 -oac aac -ovcopts preset=medium,profile=main,crf='
             bit2 = u" -oacopts ab="
             format = u"mp4"
-        elif self.combo_formato.GetSelection() == 1:
-            formato = u'converted.avi" -ofps 23.976 -ovc libxvid -oac libmp3lame -ovcopts b='
+        elif combo_formato.GetSelection() == 1:
+            formato1 = u'converted.avi" -ofps 23.976 -of avi -nosound -ovc libxvid -oac libmp3lame -ovcopts flags=+pass1,threads=2'
+            formato2 = u'converted.avi" -ofps 23.976 -of avi -ovc libxvid -oac libmp3lame -ovcopts flags=+pass2,threads=2,b='
             bit2 = u"k -oacopts ab="
             format = u"avi"
 
@@ -261,16 +263,28 @@ class AMPEclass(wx.Frame):
         for i in range(len(paths)):
             paths[i] = paths[i].encode('utf-8')
             filenames[i] = filenames[i].encode('utf-8')
-#            print paths[i]
-#            print filenames[i]
+#            print paths[i]#
+#            print filenames[i]#
             input = paths[i]
             output = paths[i][:-3]
-            if platform.system() == 'Windows':
-                encodear.append(u'"' + folderrun + u'\\bin\\' + mp2 + u'" "' + win32api.GetShortPathName(unicode(input,'utf-8')) + u'" -o "' + unicode(output,'utf-8') + formato + bitrate + bit2 + audio + resolucion)
-                logfile.append(folderrun + u'\\logs\\' + unicode(filenames[i],'utf-8') + u'-to-' + format + u'.log')
-            if platform.system() == 'Linux':
-                encodear.append(u'"' + folderrun + u'/bin/' + mp2 + u'" "' + unicode(input,'utf-8') + u'" -o "' + unicode(output,'utf-8') + formato + bitrate + bit2 + audio + resolucion)
-                logfile.append(folderrun + u'/logs/' + unicode(filenames[i],'utf-8') + u'-to-' + format + u'.log')
+            if combo_formato.GetSelection() == 1:
+                if platform.system() == 'Windows':
+                    encodear.append(u'"' + folderrun + u'\\bin\\' + mp2 + u'" "' + win32api.GetShortPathName(unicode(input,'utf-8')) + u'" -o "' + unicode(output,'utf-8') + formato1 + resolucion)
+                    encodear.append(u'"' + folderrun + u'\\bin\\' + mp2 + u'" "' + win32api.GetShortPathName(unicode(input,'utf-8')) + u'" -o "' + unicode(output,'utf-8') + formato2 + bitrate + bit2 + audio + resolucion)
+                    logfile.append(folderrun + u'\\logs\\' + unicode(filenames[i],'utf-8') + u'-to-' + format + u'.first_pass.log')
+                    logfile.append(folderrun + u'\\logs\\' + unicode(filenames[i],'utf-8') + u'-to-' + format + u'.second_pass.log')
+                if platform.system() == 'Linux':
+                    encodear.append(u'"' + folderrun + u'/bin/' + mp2 + u'" "' + unicode(input,'utf-8') + u'" -o "' + unicode(output,'utf-8') + formato1 + resolucion)
+                    encodear.append(u'"' + folderrun + u'/bin/' + mp2 + u'" "' + unicode(input,'utf-8') + u'" -o "' + unicode(output,'utf-8') + formato2 + bitrate + bit2 + audio + resolucion)
+                    logfile.append(folderrun + u'/logs/' + unicode(filenames[i],'utf-8') + u'-to-' + format + u'.first_pass.log')
+                    logfile.append(folderrun + u'/logs/' + unicode(filenames[i],'utf-8') + u'-to-' + format + u'.second_pass.log')
+            else:
+                if platform.system() == 'Windows':
+                    encodear.append(u'"' + folderrun + u'\\bin\\' + mp2 + u'" "' + win32api.GetShortPathName(unicode(input,'utf-8')) + u'" -o "' + unicode(output,'utf-8') + formato + bitrate + bit2 + audio + resolucion)
+                    logfile.append(folderrun + u'\\logs\\' + unicode(filenames[i],'utf-8') + u'-to-' + format + u'.log')
+                if platform.system() == 'Linux':
+                    encodear.append(u'"' + folderrun + u'/bin/' + mp2 + u'" "' + unicode(input,'utf-8') + u'" -o "' + unicode(output,'utf-8') + formato + bitrate + bit2 + audio + resolucion)
+                    logfile.append(folderrun + u'/logs/' + unicode(filenames[i],'utf-8') + u'-to-' + format + u'.log')
         global salir
         salir = False
         convertir = Encodeo(self)
@@ -411,6 +425,7 @@ class Encodeo(threading.Thread):
                 break
             i +=1
         try:
+            wx.MessageBox(u'Terminó la Conversión', 'Info', wx.OK | wx.ICON_INFORMATION)
             button_cancel.Label = u"Cerrar"
             button_minimize.Enable(False)
             Lista.Clear()
@@ -422,7 +437,6 @@ class Encodeo(threading.Thread):
         salir = True
         if platform.system() == 'Linux': self.kill = subprocess.Popen(u"killall mplayer2-lavc", shell = True)
         if platform.system() == 'Windows': self.kill = subprocess.Popen(u"taskkill /F /IM mplayer2.exe", shell = True)
-
 
        
 class Barras(threading.Thread):
@@ -444,11 +458,16 @@ class Barras(threading.Thread):
             except IndexError:
                 break
 #            print b
-#            print b[0]
-            try: 
-                gauge_2a.SetValue(float(b[0])+1)
-                c = float(b[0])/len(filenames)
-                gauge_1a.SetValue(c+(100*i/len(filenames))+1)
+#            print b[0]#
+            try:
+                if combo_formato.GetSelection() == 1:
+                    gauge_2a.SetValue(float(b[0])+1)
+                    c = float(b[0])/(2*len(filenames))
+                    gauge_1a.SetValue(c+(50*i/len(filenames))+1)
+                else:
+                    gauge_2a.SetValue(float(b[0])+1)
+                    c = float(b[0])/len(filenames)
+                    gauge_1a.SetValue(c+(100*i/len(filenames))+1)
             except:
                 break
 
