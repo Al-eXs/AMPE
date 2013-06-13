@@ -52,7 +52,7 @@ class AMPEclass(wx.Frame):
         global combo_formato
         combo_formato = wx.ComboBox(self, -1, choices=[u" MP4", u" AVI"], style=wx.CB_DROPDOWN)
         self.label_4 = wx.StaticText(self, -1, u"Resolución:")
-        self.combo_resolucion = wx.ComboBox(self, -1, choices=[u"Mantener Original", u" 480p (4:3)", u" 480p (16:9)", u" 720p (4:3)", u" 720p (16:9)"], style=wx.CB_DROPDOWN)
+        self.combo_resolucion = wx.ComboBox(self, -1, choices=[u"Mantener Original", u" 480p", u" 720p", u" 1080p", u" W 640px", u" W 1280px", u" W 1920px"], style=wx.CB_DROPDOWN)
         self.label_5 = wx.StaticText(self, -1, u"CRF:")
         self.slider_bitrate = wx.Slider(self, -1, 23, 10, 40)
         self.spin_bitrate = wx.SpinCtrl(self, -1, u"23", (40, 10))
@@ -180,6 +180,8 @@ class AMPEclass(wx.Frame):
             self.spin_bitrate.SetValueString(u"23")
 
     def OnQuit(self, e):
+        print "Bye Bye"
+        time.sleep(1)
         self.Destroy()
 
     def OnOpen(self, e):
@@ -214,7 +216,7 @@ class AMPEclass(wx.Frame):
             Lista.SetSelection(self.select)
         else:
             Lista.SetSelection(self.select - 1)
- #       print Lista.GetSelection()
+#        print Lista.GetSelection()
         if Lista.GetCount() == 0:
             self.button_eliminar.Enable(False)
             self.elim.Enable(False)
@@ -227,25 +229,29 @@ class AMPEclass(wx.Frame):
     def OnConvert(self, e):
         if combo_formato.GetSelection() == 0:
             formato = u'converted.mp4" -ofps 23.976 -ovc libx264 -oac aac -ovcopts preset=medium,profile=main,crf='
-            bit2 = u" -oacopts ab="
+            bit2 = u" -af channels=2,resample=44100 -oacopts ab="
             format = u"mp4"
         elif combo_formato.GetSelection() == 1:
             formato1 = u'converted.avi" -ofps 23.976 -of avi -nosound -ovc libxvid -oac libmp3lame -ovcopts flags=+pass1,threads=2'
             formato2 = u'converted.avi" -ofps 23.976 -of avi -ovc libxvid -oac libmp3lame -ovcopts flags=+pass2,threads=2,b='
-            bit2 = u"k -oacopts ab="
+            bit2 = u"k -af channels=2,resample=44100 -oacopts ab="
             format = u"avi"
 
         if self.combo_resolucion.GetSelection() == 0:
             resolucion = u" -vf scale=-1"
         elif self.combo_resolucion.GetSelection() == 1:
-            resolucion = u" -vf scale=640:480"
+            resolucion = u" -vf scale=-3:480"
         elif self.combo_resolucion.GetSelection() == 2:
-            resolucion = u" -vf scale=854:480"
+            resolucion = u" -vf scale=-3:720"
         elif self.combo_resolucion.GetSelection() == 3:
-            resolucion = u" -vf scale=960:720"
+            resolucion = u" -vf scale=-3:1080"
         elif self.combo_resolucion.GetSelection() == 4:
-            resolucion = u" -vf scale=1280:720"
-        
+            resolucion = u" -vf scale=640:-3"
+        elif self.combo_resolucion.GetSelection() == 5:
+            resolucion = u" -vf scale=1280:-3"
+        elif self.combo_resolucion.GetSelection() == 6:
+            resolucion = u" -vf scale=1920:-3"
+
         bitrate = unicode(self.spin_bitrate.GetValue())
 
         if self.radio_128.Value == 1: audio = u"128k"
@@ -294,25 +300,32 @@ class AMPEclass(wx.Frame):
         
 
     def OnAbout(self, e):
-        description1 = u"AMPE (Al_eXs MPlayer2 Encoder) es una Interfaz Gráfica de\n"
-        description2 = u"Usuario(GUI) para encodear videos MKV, MP4 o AVI en MP4 o\n"
-        description3 = u"AVI compatibles con las consolas usando como fuente para\n"
-        description4 = u"encodear el MPlayer2.\n\nAcepta estilos y enlaza los capitulos con\nOrdered Chapters Externos.\n\n"
-        description5 = u"Agradecimientos:\n-ErunamoJAZZ(AnS), por su apoyo en mejorar mi codigo python\n"
-        description6 = u"-Batousay(BB), por su tip para las barras de progreso\n"
-        description = description1 + description2 + description3 + description4 + description5 + description6
-        licence1 = u"AMPE es un sofware libre; se puede redistribuir y/o modificar\n"
-        licence2 = u"bajo los terminos de la Licencia Publica General GNU Version 3.\n"
-        licence3 = u"AMPE es distribuido con la esperanza de ser un software util\n"
-        licence4 = u"pero SIN GARANTIA ALGUNA."
-        licence = licence1 + licence2 + licence3 + licence4
+        description = u"""
+AMPE (Al_eXs MPlayer2 Encoder) es una Interfaz Gráfica de
+Usuario(GUI) para encodear videos MKV, MP4 o AVI en MP4 o
+AVI compatibles con las consolas usando como fuente para
+encodear el MPlayer2.\n
+Acepta estilos y enlaza los capitulos con
+Ordered Chapters Externos(Segment Linking).\n
+Agradecimientos:
+-lash0r por el build del mplayer2 para windows.
+-ErunamoJAZZ(AnS) por su apoyo en mejorar mi codigo python.
+-Batousay(BB) por su tip para las barras de progreso.
+-Xibalba, Seposi, ZeroTheBest por probar las versiones betas.\n"""
+        
+        licence = u"""
+AMPE es un sofware libre; se puede redistribuir y/o modificar
+bajo los terminos de la Licencia Publica General GNU Version 3.
+AMPE es distribuido con la esperanza de ser un software util
+pero SIN GARANTIA ALGUNA.\n"""
+
         info = wx.AboutDialogInfo()
         if platform.system() == 'Linux': info.SetIcon(wx.Icon(folderrun + '/img/logo.png', wx.BITMAP_TYPE_PNG))
         if platform.system() == 'Windows': info.SetIcon(wx.Icon(folderrun + '\\img\\logo.png', wx.BITMAP_TYPE_PNG))
         info.SetName(u"AMPE")
-        info.SetVersion(u"0.1.0")
+        info.SetVersion(u"1.0.9")
         info.SetDescription(description)
-        info.SetCopyright(u'(C) 2011 Al_eXs')
+        info.SetCopyright(u'(C) 2013 Al_eXs')
         info.SetLicence(licence)
         wx.AboutBox(info)
 
@@ -330,8 +343,8 @@ class ConvertDialog(wx.Frame):
         kwds["style"] = wx.CAPTION
         wx.Frame.__init__(self, None, -1, title = u"  Convirtiendo", **kwds)
         self.label_1a = wx.StaticText(self, -1, u"Convirtiendo:")
- #       global label_capi
- #       label_capi = wx.StaticText(self, -1, "")#nombre del capi
+        global label_capi
+        label_capi = wx.StaticText(self, -1, "")#nombre del capi
         global gauge_2a
         gauge_2a = wx.Gauge(self, -1, 100)
         self.label_2a = wx.StaticText(self, -1, u"Progreso Total:")
@@ -358,7 +371,7 @@ class ConvertDialog(wx.Frame):
     def __set_properties(self):
         # begin wxGlade: ConvertDialog.__set_properties
         self.SetTitle(u"Convirtiendo")
-        self.SetSize((500, 200))
+        self.SetSize((500, 220))
         gauge_2a.SetMinSize((450, 15))
         gauge_1a.SetMinSize((450, 15))
         # end wxGlade
@@ -370,8 +383,8 @@ class ConvertDialog(wx.Frame):
         sizer_5a = wx.BoxSizer(wx.HORIZONTAL)
         sizer_4a = wx.BoxSizer(wx.VERTICAL)
         sizer_3a = wx.BoxSizer(wx.VERTICAL)
-        sizer_3a.Add(self.label_1a, 0, wx.BOTTOM, 10)
-#        sizer_3a.Add(label_capi, 0, 0, 0)
+        sizer_3a.Add(self.label_1a, 0, 0, 0)
+        sizer_3a.Add(label_capi, 0, wx.BOTTOM, 10)
         sizer_3a.Add(gauge_2a, 0, 0, 0)
         sizer_2a.Add(sizer_3a, 0, wx.LEFT|wx.TOP, 20)
         sizer_4a.Add(self.label_2a, 0, wx.BOTTOM, 10)
@@ -417,15 +430,25 @@ class Encodeo(threading.Thread):
             except:
                 pass
             self.proceso = subprocess.Popen(encodear[i].encode('utf-8'), stdout = open(logfile[i], "a"), stderr = open(logfile[i], "a"), shell = True)
+            if combo_formato.GetSelection() == 1:
+                label_capi.SetLabel(filenames[i/2])
+                print filenames[i/2]
+            else:
+                label_capi.SetLabel(filenames[i])
+                print filenames[i]
             bars = Barras(self)
             bars.start()
             self.proceso.wait()
-            time.sleep(3)
+            time.sleep(1)
             if i == len(encodear)-1:
                 break
             i +=1
         try:
-            wx.MessageBox(u'Terminó la Conversión', 'Info', wx.OK | wx.ICON_INFORMATION)
+            if not salir:
+                label_capi.SetLabel(u" ")
+                gauge_1a.SetValue(100)
+                gauge_2a.SetValue(100)
+                wx.MessageBox(u'Terminó la Conversión', 'Info', wx.OK | wx.ICON_INFORMATION)
             button_cancel.Label = u"Cerrar"
             button_minimize.Enable(False)
             Lista.Clear()
@@ -457,7 +480,7 @@ class Barras(threading.Thread):
                 b = a[1].split(u'%')
             except IndexError:
                 break
-#            print b
+            print '{0}\r'.format(b[0]),
 #            print b[0]#
             try:
                 if combo_formato.GetSelection() == 1:
