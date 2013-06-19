@@ -25,12 +25,18 @@ class AMPEclass(wx.Frame):
         self.sizer_6_staticbox = wx.StaticBox(self, -1, u"Opciones")
         self.sizer_7_staticbox = wx.StaticBox(self, -1, u"Archivos a Convertir")
         self.select = 0
-                
+
+        global elim, Lista, button_eliminar, combo_formato, button_convertir, filenames, paths
+
+        filenames = []
+        paths = []
+        print ""
+        
         # Menu Bar
         self.Menu = wx.MenuBar()
         wxglade_tmp_menu = wx.Menu()
         self.open = wxglade_tmp_menu.Append(wx.NewId(), u"Abrir", "", wx.ITEM_NORMAL)
-        self.elim = wxglade_tmp_menu.Append(wx.NewId(), u"Eliminar", "", wx.ITEM_NORMAL)
+        elim = wxglade_tmp_menu.Append(wx.NewId(), u"Eliminar", "", wx.ITEM_NORMAL)
         wxglade_tmp_menu.AppendSeparator()
         self.quit = wxglade_tmp_menu.Append(wx.NewId(), u"Salir", "", wx.ITEM_NORMAL)
         self.Menu.Append(wxglade_tmp_menu, u"Archivo")
@@ -44,12 +50,12 @@ class AMPEclass(wx.Frame):
         self.Menu.Append(wxglade_tmp_menu, u"Ayuda")
         self.SetMenuBar(self.Menu)
         # Menu Bar end
-        global Lista
+        file_drop_target = MyFileDropTarget(self)
         Lista = wx.ListBox(self, -1)
+        Lista.SetDropTarget(file_drop_target)
         self.button_abrir = wx.Button(self, -1, u"Abrir")
-        self.button_eliminar = wx.Button(self, -1, u"Eliminar")
+        button_eliminar = wx.Button(self, -1, u"Eliminar")
         self.label_3 = wx.StaticText(self, -1, u"Formato:")
-        global combo_formato
         combo_formato = wx.ComboBox(self, -1, choices=[u" MP4", u" AVI"], style=wx.CB_DROPDOWN)
         self.label_4 = wx.StaticText(self, -1, u"Resolución:")
         self.combo_resolucion = wx.ComboBox(self, -1, choices=[u"Mantener Original", u" 480p", u" 720p", u" 1080p", u" W 640px", u" W 1280px", u" W 1920px"], style=wx.CB_DROPDOWN)
@@ -59,20 +65,20 @@ class AMPEclass(wx.Frame):
         self.radio_128 = wx.RadioButton(self, -1, u"128 Kb/s")
         self.radio_160 = wx.RadioButton(self, -1, u"160 Kb/s")
         self.radio_192 = wx.RadioButton(self, -1, u"192 Kb/s")
-        self.button_convertir = wx.Button(self, -1, u"Convertir")
+        button_convertir = wx.Button(self, -1, u"Convertir")
         self.button_salir = wx.Button(self, -1, u"Salir")
-
+                
         self.Bind(wx.EVT_SPINCTRL, self.OnSpin)
         self.Bind(wx.EVT_SLIDER, self.OnSlider)
         self.Bind(wx.EVT_MENU, self.OnOpen, self.open)
-        self.Bind(wx.EVT_MENU, self.OnElim, self.elim)
+        self.Bind(wx.EVT_MENU, self.OnElim, elim)
         self.Bind(wx.EVT_MENU, self.OnQuit, self.quit)
         self.Bind(wx.EVT_MENU, self.OnAbout, self.about)
         self.Bind(wx.EVT_MENU, self.OnLogDel, self.logdel)
         self.Bind(wx.EVT_BUTTON, self.OnOpen, self.button_abrir)
-        self.Bind(wx.EVT_BUTTON, self.OnElim, self.button_eliminar)
+        self.Bind(wx.EVT_BUTTON, self.OnElim, button_eliminar)
         self.Bind(wx.EVT_BUTTON, self.OnQuit, self.button_salir)
-        self.Bind(wx.EVT_BUTTON, self.OnConvert, self.button_convertir)
+        self.Bind(wx.EVT_BUTTON, self.OnConvert, button_convertir)
         self.Bind(wx.EVT_LISTBOX, self.SelList, Lista)
         self.Bind(wx.EVT_COMBOBOX, self.SelFormat, combo_formato)
         self.Bind(wx.EVT_CLOSE, self.OnQuit)
@@ -88,19 +94,20 @@ class AMPEclass(wx.Frame):
             self.SetTitle(u"AMPE - Al_eXs MPlayer2 Encoder para Linux")
         else:
             self.SetTitle(u"AMPE - Al_eXs MPlayer2 Encoder")
+        global _icon
         _icon = wx.EmptyIcon()
         _icon.CopyFromBitmap(wx.Bitmap(u"./img/icon.ico", wx.BITMAP_TYPE_ANY))
         self.SetIcon(_icon)
         self.SetSize((600, 520))
         Lista.SetMinSize((400, 200))
-        self.elim.Enable(False)
-        self.button_eliminar.Enable(False)
+        elim.Enable(False)
+        button_eliminar.Enable(False)
         combo_formato.SetSelection(0)
         self.combo_resolucion.SetSelection(0)
         self.slider_bitrate.SetMinSize((250, -1))
         self.spin_bitrate.SetMinSize((60, -1))
         self.radio_128.SetValue(1)
-        self.button_convertir.Enable(False)
+        button_convertir.Enable(False)
         self.optns.Enable(False)
         # end wxGlade
 
@@ -121,7 +128,7 @@ class AMPEclass(wx.Frame):
         sizer_7.Add(Lista, 3, 0, 10)
         sizer_4.Add(sizer_7, 0, wx.LEFT|wx.TOP|wx.BOTTOM, 10)
         sizer_5.Add(self.button_abrir, 0, wx.ALL, 10)
-        sizer_5.Add(self.button_eliminar, 0, wx.ALL, 10)
+        sizer_5.Add(button_eliminar, 0, wx.ALL, 10)
         sizer_4.Add(sizer_5, 0, wx.TOP, 20)
         sizer_3.Add(sizer_4, 0, wx.ALIGN_CENTER_HORIZONTAL, 0)
         grid_sizer_9.Add(self.label_3, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5)
@@ -140,7 +147,7 @@ class AMPEclass(wx.Frame):
         sizer_10.Add(sizer_11_copy, 0, wx.ALL, 10)
         sizer_6.Add(sizer_10, 0, wx.ALL, 5)
         sizer_3.Add(sizer_6, 0, wx.LEFT|wx.ALIGN_CENTER_HORIZONTAL, 10)
-        sizer_8.Add(self.button_convertir, 0, wx.RIGHT, 20)
+        sizer_8.Add(button_convertir, 0, wx.RIGHT, 20)
         sizer_8.Add(self.button_salir, 0, wx.LEFT, 20)
         sizer_3.Add(sizer_8, 0, wx.ALL|wx.ALIGN_CENTER_HORIZONTAL, 10)
         sizer_11.Add(sizer_3, 1, wx.ALIGN_CENTER_VERTICAL, 0)
@@ -181,7 +188,7 @@ class AMPEclass(wx.Frame):
 
     def OnQuit(self, e):
         print "Bye Bye"
-        time.sleep(1)
+        #time.sleep(1)
         self.Destroy()
 
     def OnOpen(self, e):
@@ -193,19 +200,19 @@ class AMPEclass(wx.Frame):
             style=wx.OPEN | wx.MULTIPLE | wx.CHANGE_DIR
             )
         if dlg.ShowModal() == wx.ID_OK: 
-            global filenames
-            filenames = dlg.GetFilenames()
-            global paths
-            paths = dlg.GetPaths()
-            for filename in filenames:
+            filename = dlg.GetFilenames()
+            path = dlg.GetPaths()
+            for index in range(len(filename)):
+                filenames.append(filename[index])
+                paths.append(path[index])
                 if self.select == -1:
-                    Lista.Append(filename)
-                if Lista.FindString(filename) == -1:
-                    Lista.Append(filename)
+                    Lista.Append(filename[index])
+                if Lista.FindString(filename[index]) == -1:
+                    Lista.Append(filename[index])
             if Lista.GetCount()> 0:
-                self.button_eliminar.Enable(True)
-                self.elim.Enable(True)
-                self.button_convertir.Enable(True)
+                button_eliminar.Enable(True)
+                elim.Enable(True)
+                button_convertir.Enable(True)
             Lista.SetSelection(Lista.GetCount() - 1)
             self.select = Lista.GetSelection()
         dlg.Destroy()
@@ -218,9 +225,9 @@ class AMPEclass(wx.Frame):
             Lista.SetSelection(self.select - 1)
 #        print Lista.GetSelection()
         if Lista.GetCount() == 0:
-            self.button_eliminar.Enable(False)
-            self.elim.Enable(False)
-            self.button_convertir.Enable(False)
+            button_eliminar.Enable(False)
+            elim.Enable(False)
+            button_convertir.Enable(False)
         self.select = Lista.GetSelection()
         
     def SelList(self, e):
@@ -269,8 +276,8 @@ class AMPEclass(wx.Frame):
         for i in range(len(paths)):
             paths[i] = paths[i].encode('utf-8')
             filenames[i] = filenames[i].encode('utf-8')
-#            print paths[i]#
-#            print filenames[i]#
+            #print paths[i]#
+            #print filenames[i]#
             input = paths[i]
             output = paths[i][:-3]
             if combo_formato.GetSelection() == 1:
@@ -308,7 +315,7 @@ encodear el MPlayer2.\n
 Acepta estilos y enlaza los capitulos con
 Ordered Chapters Externos(Segment Linking).\n
 Agradecimientos:
--lash0r por el build del mplayer2 para windows.
+-lachs0r por el build del mplayer2 para windows.
 -ErunamoJAZZ(AnS) por su apoyo en mejorar mi codigo python.
 -Batousay(BB) por su tip para las barras de progreso.
 -Xibalba, Seposi, ZeroTheBest por probar las versiones betas.\n"""
@@ -325,7 +332,12 @@ pero SIN GARANTIA ALGUNA.\n"""
         info.SetName(u"AMPE")
         info.SetVersion(u"1.0.9")
         info.SetDescription(description)
-        info.SetCopyright(u'(C) 2013 Al_eXs')
+        info.SetCopyright(u'(C) 2011-2013 Al_eXs')
+        info.SetWebSite(u'https://github.com/Al-eXs/AMPE')
+#        info.AddDeveloper('-')
+#        info.AddDocWriter('-')
+#        info.AddArtist('-')
+#        info.AddTranslator('-')
         info.SetLicence(licence)
         wx.AboutBox(info)
 
@@ -343,18 +355,14 @@ class ConvertDialog(wx.Frame):
         kwds["style"] = wx.CAPTION
         wx.Frame.__init__(self, None, -1, title = u"  Convirtiendo", **kwds)
         self.label_1a = wx.StaticText(self, -1, u"Convirtiendo:")
-        global label_capi
+        
+        global label_capi, gauge_2a, label_total, gauge_1a, button_minimize, button_cancel
         label_capi = wx.StaticText(self, -1, "")#nombre del capi
-        global gauge_2a
         gauge_2a = wx.Gauge(self, -1, 100)
         self.label_2a = wx.StaticText(self, -1, u"Progreso Total:")
-        global label_total
 #        label_total = wx.StaticText(self, -1, "")
-        global gauge_1a
         gauge_1a = wx.Gauge(self, -1, 100)
-        global button_minimize
         button_minimize = wx.Button(self, -1, u"Minimizar")
-        global button_cancel
         button_cancel = wx.Button(self, -1, u"Cancelar")
         self.padre = parent
         
@@ -372,6 +380,7 @@ class ConvertDialog(wx.Frame):
         # begin wxGlade: ConvertDialog.__set_properties
         self.SetTitle(u"Convirtiendo")
         self.SetSize((500, 220))
+        self.SetIcon(_icon)
         gauge_2a.SetMinSize((450, 15))
         gauge_1a.SetMinSize((450, 15))
         # end wxGlade
@@ -402,12 +411,13 @@ class ConvertDialog(wx.Frame):
     
     def OnCancel(self, e):
         if not button_cancel.Label == u"Cerrar":
+            global salir
             salir = True
             enc = Encodeo(self)
             enc.stop()
-            self.padre.button_eliminar.Enable(True)
-            self.padre.elim.Enable(True)
-            self.padre.button_convertir.Enable(True)
+            button_eliminar.Enable(True)
+            elim.Enable(True)
+            button_convertir.Enable(True)
         self.padre.Show(True)
         self.Destroy()
         
@@ -481,7 +491,6 @@ class Barras(threading.Thread):
             except IndexError:
                 break
             print '{0}\r'.format(b[0]),
-#            print b[0]#
             try:
                 if combo_formato.GetSelection() == 1:
                     gauge_2a.SetValue(float(b[0])+1)
@@ -493,6 +502,31 @@ class Barras(threading.Thread):
                     gauge_1a.SetValue(c+(100*i/len(filenames))+1)
             except:
                 break
+
+class MyFileDropTarget(wx.FileDropTarget):
+    def __init__(self, window):
+        wx.FileDropTarget.__init__(self)
+        self.window = window
+
+    def OnDropFiles(self, x, y, files):
+        #self.window.SetInsertionPointEnd()
+        self.select = Lista.GetSelection()
+        for index in range(len(files)):
+            path, filename = os.path.split(files[index])
+            if filename[-4:] == '.mkv' or filename[-4:] == '.mp4' or filename[-4:] == '.avi':
+                filenames.append(filename)
+                paths.append(files[index])
+                if self.select == -1:
+                    Lista.Append(filename)
+                if Lista.FindString(filename) == -1:
+                    Lista.Append(filename)
+        if Lista.GetCount()> 0:
+            button_eliminar.Enable(True)
+            elim.Enable(True)
+            button_convertir.Enable(True)
+        Lista.SetSelection(Lista.GetCount() - 1)
+        self.select = Lista.GetSelection()
+
 
 class AMPEapp(wx.App):
     def OnInit(self):
@@ -506,4 +540,5 @@ class AMPEapp(wx.App):
 
 if __name__ == "__main__":
     AMPE = AMPEapp(0)
+    AMPE.MainLoop()
     AMPE.MainLoop()
