@@ -1,4 +1,4 @@
-AMPE - Al_eXs' MPlayer2/MPV Encoder
+锘緼MPE - Al_eXs' MPlayer2/MPV Encoder
 
 Repositorio GIT:
 https://github.com/Al-eXs/AMPE
@@ -23,8 +23,8 @@ AMPE:
  |  |-AMPE.exe                  Ejecutable del conversor.
  |-img:
  |  |-AMPE.ico                  Icono del ejecutable de Windows.
- |  |-AMPE.png                  Im醙en PNG del Icono.
- |  |-icon.ico                  Icono de la aplicaci髇.
+ |  |-AMPE.png                  Im谩gen PNG del Icono.
+ |  |-icon.ico                  Icono de la aplicaci贸n.
  |  |-logo.png                  Logo.
  |-logs:                        Carpeta para Logs de conversiones.
  |-AMPE.exe                     Ejecutable de Windows.
@@ -34,53 +34,53 @@ AMPE:
  |  |-AMPE.py                   Codigo fuente del proyecto(en Python)
                                 (Para ejecutarlo desde consola se necesita Python,
                                 wxPython y para correr en Windows es necesario el
-                                m骴ulo win32api de Python for Windows)
+                                m贸dulo win32api de Python for Windows)
 
 =============================
 
-No necesita instalaci髇, esta pensado en ser usable en todos los sistemas
-Windows y *nix a鷑 sin Python, y asi sea f醕il de ejecutar.
+No necesita instalaci贸n, esta pensado en ser usable en todos los sistemas
+Windows y *nix a煤n sin Python, y asi sea f谩cil de ejecutar.
 
 =============================
 
 Changelog:
 
-Versi髇 1.0.0:
- - Versi髇 Inicial.
+Versi贸n 1.0.0:
+ - Versi贸n Inicial.
  
-Versi髇 1.0.1:
+Versi贸n 1.0.1:
  - Corregido fallo de items repetidos en la lista.
- - Opci髇 de eliminar items de la lista.
+ - Opci贸n de eliminar items de la lista.
 
-Versi髇 1.0.2:
+Versi贸n 1.0.2:
  - Cambio en el encodeo de MP4 de bitrate a CRF.
- - Opci髇 para cambiar el bitrate del audio de salida.
+ - Opci贸n para cambiar el bitrate del audio de salida.
 
-Versi髇 1.0.3:
+Versi贸n 1.0.3:
  - Determinar SO y hacer el comando para encodeo.
- - Creaci髇 de logs por cada elemento encodeado.
+ - Creaci贸n de logs por cada elemento encodeado.
 
-Versi髇 1.0.4:
- - Mas opciones para la resoluci髇 de salida.
+Versi贸n 1.0.4:
+ - Mas opciones para la resoluci贸n de salida.
  - Cola de encodeo para todos los items de la lista.
  - Cancelado correcto del proceso de encodeo.
  
-Versi髇 1.0.5:
- - Nuevo cuadro de di醠ogo con la informaci髇 de progreso.
+Versi贸.0.5:
+ - Nuevo cuadro de di谩logo con la informaci贸n de progreso.
  - Se oculta la ventana principal.
  
-Versi髇 1.0.6:
+Versi贸.0.6:
  - Al cancelar se puede regresar a la ventana principal a modificar opciones encodear la misma lista.
  
-Versi髇 1.0.7:
- - Modificado el m閠odo de obtenci髇 de datos para las barras de progreso.
+Versi贸n 1.0.7:
+ - Modificado el m茅do de obtenci贸e datos para las barras de progreso.
  
-Versi髇 1.0.8:
- - A馻dido encodeo a 2 pasadas en AVI.
- - Modificado la visualizaci髇 de las barras de progreso.
+Versi贸n 1.0.8:
+ - A帽adido encodeo a 2 pasadas en AVI.
+ - Modificado la visualizaci贸n de las barras de progreso.
  
-Varsi髇 1.0.9:
- - A馻dido Drag 'n Drop.
+Varsi贸.0.9:
+ - A帽adido Drag 'n Drop.
  - Corregido error en las barras de progreso.
  - Corregido error con resoluciones no estandar.
  - Se recomprime y resamplea el Audio a 2 canales @ 44.1kHz para mejor compatibilidad
@@ -88,9 +88,9 @@ Varsi髇 1.0.9:
 
  
 Mejoras en proceso:
- -Configuraci髇 individual de los archivos.
+ -Configuraci贸ndividual de los archivos.
  -Drag 'n Drop en Linux.
- -Im醙enes en los men鷖 en Windows.
+ -Im谩nes en los men煤s en Windows.
  -Archivo de lenguaje, para traducciones posteriores.
  -Bugfix que resulten.
 
