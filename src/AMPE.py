@@ -20,10 +20,10 @@ class AMPEclass(wx.Frame):
         # begin wxGlade: AMPEclass.__init__
         kwds["style"] = wx.MINIMIZE_BOX | wx.SYSTEM_MENU | wx.CAPTION |	wx.CLOSE_BOX | wx.TRANSPARENT_WINDOW
         wx.Frame.__init__(self, *args, **kwds)
-        self.sizer_9_staticbox = wx.StaticBox(self, -1, u"Video")
-        self.sizer_10_staticbox = wx.StaticBox(self, -1, u"Audio")
-        self.sizer_6_staticbox = wx.StaticBox(self, -1, u"Opciones")
-        self.sizer_7_staticbox = wx.StaticBox(self, -1, u"Archivos a Convertir")
+        self.sizer_6_staticbox = wx.StaticBox(self, 0, u"Opciones")
+        self.sizer_7_staticbox = wx.StaticBox(self, 0, u"Archivos a Convertir")
+        self.sizer_9_staticbox = wx.StaticBox(self, 0, u"Video")
+        self.sizer_10_staticbox = wx.StaticBox(self, 0, u"Audio")
         self.select = 0
 
         global elim, Lista, button_eliminar, combo_formato, button_convertir, filenames, paths
@@ -35,38 +35,38 @@ class AMPEclass(wx.Frame):
         # Menu Bar
         self.Menu = wx.MenuBar()
         wxglade_tmp_menu = wx.Menu()
-        self.open = wxglade_tmp_menu.Append(wx.NewId(), u"Abrir", "", wx.ITEM_NORMAL)
-        elim = wxglade_tmp_menu.Append(wx.NewId(), u"Eliminar", "", wx.ITEM_NORMAL)
+        self.open = wxglade_tmp_menu.Append(wx.ID_OPEN, u"&Abrir", "Añadir un archivo", wx.ITEM_NORMAL)
+        elim = wxglade_tmp_menu.Append(wx.ID_CLOSE, u"&Eliminar", "Eliminar seleccionado", wx.ITEM_NORMAL)
         wxglade_tmp_menu.AppendSeparator()
-        self.quit = wxglade_tmp_menu.Append(wx.NewId(), u"Salir", "", wx.ITEM_NORMAL)
-        self.Menu.Append(wxglade_tmp_menu, u"Archivo")
+        self.quit = wxglade_tmp_menu.Append(wx.ID_EXIT, u"&Salir", "Salir de AMPE", wx.ITEM_NORMAL)
+        self.Menu.Append(wxglade_tmp_menu, u"Archiv&o")
         wxglade_tmp_menu = wx.Menu()
-        self.optns = wxglade_tmp_menu.Append(wx.NewId(), u"Opciones", "", wx.ITEM_NORMAL)
+        self.optns = wxglade_tmp_menu.Append(wx.ID_PROPERTIES, u"&Opciones", "", wx.ITEM_NORMAL)
         wxglade_tmp_menu.AppendSeparator()
-        self.logdel = wxglade_tmp_menu.Append(wx.NewId(), u"Borrar Logs", "", wx.ITEM_NORMAL)
-        self.Menu.Append(wxglade_tmp_menu, u"Herramientas")
+        self.logdel = wxglade_tmp_menu.Append(wx.ID_CLEAR, u"&Borrar Logs", "Borra todo", wx.ITEM_NORMAL)
+        self.Menu.Append(wxglade_tmp_menu, u"&Herramientas")
         wxglade_tmp_menu = wx.Menu()
-        self.about = wxglade_tmp_menu.Append(wx.NewId(), u"Acerca de...", "", wx.ITEM_NORMAL)
-        self.Menu.Append(wxglade_tmp_menu, u"Ayuda")
+        self.about = wxglade_tmp_menu.Append(wx.ID_ABOUT, u"&Acerca de...", "", wx.ITEM_NORMAL)
+        self.Menu.Append(wxglade_tmp_menu, u"A&yuda")
         self.SetMenuBar(self.Menu)
         # Menu Bar end
         file_drop_target = MyFileDropTarget(self)
         Lista = wx.ListBox(self, -1)
         Lista.SetDropTarget(file_drop_target)
-        self.button_abrir = wx.Button(self, -1, u"Abrir")
-        button_eliminar = wx.Button(self, -1, u"Eliminar")
-        self.label_3 = wx.StaticText(self, -1, u"Formato:")
+        self.button_abrir = wx.Button(self, -1, u"Abr&ir")
+        button_eliminar = wx.Button(self, -1, u"&Eliminar")
+        self.label_3 = wx.StaticText(self, -1, u"&Formato:")
         combo_formato = wx.ComboBox(self, -1, choices=[u" MP4", u" AVI"], style=wx.CB_DROPDOWN)
-        self.label_4 = wx.StaticText(self, -1, u"Resolución:")
+        self.label_4 = wx.StaticText(self, -1, u"&Resolución:")
         self.combo_resolucion = wx.ComboBox(self, -1, choices=[u"Mantener Original", u" 480p", u" 720p", u" 1080p", u" W 640px", u" W 1280px", u" W 1920px"], style=wx.CB_DROPDOWN)
-        self.label_5 = wx.StaticText(self, -1, u"CRF:")
+        self.label_5 = wx.StaticText(self, -1, u"&CRF:")
         self.slider_bitrate = wx.Slider(self, -1, 23, 10, 40)
         self.spin_bitrate = wx.SpinCtrl(self, -1, u"23", (40, 10))
-        self.radio_128 = wx.RadioButton(self, -1, u"128 Kb/s")
-        self.radio_160 = wx.RadioButton(self, -1, u"160 Kb/s")
-        self.radio_192 = wx.RadioButton(self, -1, u"192 Kb/s")
-        button_convertir = wx.Button(self, -1, u"Convertir")
-        self.button_salir = wx.Button(self, -1, u"Salir")
+        self.radio_128 = wx.RadioButton(self, -1, u"1&28 Kb/s")
+        self.radio_160 = wx.RadioButton(self, -1, u"1&60 Kb/s")
+        self.radio_192 = wx.RadioButton(self, -1, u"1&92 Kb/s")
+        button_convertir = wx.Button(self, -1, u"Con&vertir")
+        self.button_salir = wx.Button(self, -1, u"&Salir")
                 
         self.Bind(wx.EVT_SPINCTRL, self.OnSpin)
         self.Bind(wx.EVT_SLIDER, self.OnSlider)
@@ -89,11 +89,11 @@ class AMPEclass(wx.Frame):
     def __set_properties(self):
         # begin wxGlade: AMPEclass.__set_properties
         if platform.system() == 'Windows':
-            self.SetTitle(u"AMPE - Al_eXs MPlayer2 Encoder para Windows")
+            self.SetTitle(u"AMPE - Al_eXs MPV Encoder para Windows")
         elif platform.system() == 'Linux':
-            self.SetTitle(u"AMPE - Al_eXs MPlayer2 Encoder para Linux")
+            self.SetTitle(u"AMPE - Al_eXs MPV Encoder para Linux")
         else:
-            self.SetTitle(u"AMPE - Al_eXs MPlayer2 Encoder")
+            self.SetTitle(u"AMPE - Al_eXs MPV Encoder")
         global _icon
         _icon = wx.EmptyIcon()
         _icon.CopyFromBitmap(wx.Bitmap(u"./img/icon.ico", wx.BITMAP_TYPE_ANY))
@@ -113,18 +113,18 @@ class AMPEclass(wx.Frame):
 
     def __do_layout(self):
         # begin wxGlade: AMPEclass.__do_layout
+        sizer_10 = wx.StaticBoxSizer(self.sizer_10_staticbox, wx.HORIZONTAL)
+        sizer_7 = wx.StaticBoxSizer(self.sizer_7_staticbox, wx.HORIZONTAL)
+        sizer_6 = wx.StaticBoxSizer(self.sizer_6_staticbox, wx.HORIZONTAL)
+        sizer_9 = wx.StaticBoxSizer(self.sizer_9_staticbox, wx.HORIZONTAL)
         sizer_11 = wx.BoxSizer(wx.HORIZONTAL)
         sizer_3 = wx.BoxSizer(wx.VERTICAL)
         sizer_8 = wx.BoxSizer(wx.HORIZONTAL)
-        sizer_6 = wx.StaticBoxSizer(self.sizer_6_staticbox, wx.HORIZONTAL)
-        sizer_10 = wx.StaticBoxSizer(self.sizer_10_staticbox, wx.HORIZONTAL)
         sizer_11_copy = wx.BoxSizer(wx.VERTICAL)
-        sizer_9 = wx.StaticBoxSizer(self.sizer_9_staticbox, wx.HORIZONTAL)
         grid_sizer_9 = wx.FlexGridSizer(3, 2, 0, 0)
         sizer_12 = wx.BoxSizer(wx.HORIZONTAL)
         sizer_4 = wx.BoxSizer(wx.HORIZONTAL)
         sizer_5 = wx.BoxSizer(wx.VERTICAL)
-        sizer_7 = wx.StaticBoxSizer(self.sizer_7_staticbox, wx.HORIZONTAL)
         sizer_7.Add(Lista, 3, 0, 10)
         sizer_4.Add(sizer_7, 0, wx.LEFT|wx.TOP|wx.BOTTOM, 10)
         sizer_5.Add(self.button_abrir, 0, wx.ALL, 10)
@@ -141,9 +141,9 @@ class AMPEclass(wx.Frame):
         grid_sizer_9.Add(sizer_12, 0, wx.TOP|wx.BOTTOM, 5)
         sizer_9.Add(grid_sizer_9, 0, 0, 0)
         sizer_6.Add(sizer_9, 0, wx.ALL, 5)
-        sizer_11_copy.Add(self.radio_128, 0, wx.TOP, 5)
-        sizer_11_copy.Add(self.radio_160, 0, wx.TOP, 5)
-        sizer_11_copy.Add(self.radio_192, 0, wx.TOP, 5)
+        sizer_11_copy.Add(self.radio_128, 0, wx.ALL, 4)
+        sizer_11_copy.Add(self.radio_160, 0, wx.ALL, 4)
+        sizer_11_copy.Add(self.radio_192, 0, wx.ALL, 4)
         sizer_10.Add(sizer_11_copy, 0, wx.ALL, 10)
         sizer_6.Add(sizer_10, 0, wx.ALL, 5)
         sizer_3.Add(sizer_6, 0, wx.LEFT|wx.ALIGN_CENTER_HORIZONTAL, 10)
@@ -161,26 +161,28 @@ class AMPEclass(wx.Frame):
         if platform.system() == 'Windows':
             for each in os.listdir(folderrun + '\\logs'):
                 try:
-                    os.remove(folderrun + '\\logs\\' + each)
+                    if each.endswith(".log"):
+                        os.remove(folderrun + '\\logs\\' + each)
                 except:
                     pass
         if platform.system() == 'Linux':
             for each in os.listdir(folderrun + '/logs'):
                 try:
-                    os.remove(folderrun + '/logs/' + each)
+                    if each.endswith(".log"):
+                        os.remove(folderrun + '/logs/' + each)
                 except:
                     pass
         wx.MessageBox('Los archivos de Log\nhan sido borrados.', ' Info', wx.OK | wx.ICON_INFORMATION)
 
     def SelFormat(self, e):
         if  combo_formato.GetSelection() == 1:
-            self.label_5.Label = u"Bitrate:"
+            self.label_5.Label = u"&Bitrate:"
             self.slider_bitrate.SetRange(500, 6000)
             self.slider_bitrate.SetValue(1500)
             self.spin_bitrate.SetRange(500, 6000)
             self.spin_bitrate.SetValueString(u"1500")
         else:
-            self.label_5.Label = u"CRF:"
+            self.label_5.Label = u"&CRF:"
             self.slider_bitrate.SetRange(10, 40)
             self.slider_bitrate.SetValue(23)
             self.spin_bitrate.SetRange(10, 40)
@@ -235,13 +237,13 @@ class AMPEclass(wx.Frame):
         
     def OnConvert(self, e):
         if combo_formato.GetSelection() == 0:
-            formato = u'converted.mp4" -ofps 23.976 -ovc libx264 -oac aac -ovcopts preset=medium,profile=main,crf='
-            bit2 = u" -af channels=2,resample=44100 -oacopts ab="
+            formato = u'converted.mp4" -ofps 23.976 -ovfirst -ovc libx264 -oac aac -ovcopts preset=medium,profile=main,crf='
+            bit2 = u" -af lavrresample=srate=44100,pan=2:1:0:0:1:1:1:1:1:1:0:0:1,format=s16le -oacopts ab="
             format = u"mp4"
         elif combo_formato.GetSelection() == 1:
-            formato1 = u'converted.avi" -ofps 23.976 -of avi -nosound -ovc libxvid -oac libmp3lame -ovcopts flags=+pass1,threads=2'
-            formato2 = u'converted.avi" -ofps 23.976 -of avi -ovc libxvid -oac libmp3lame -ovcopts flags=+pass2,threads=2,b='
-            bit2 = u"k -af channels=2,resample=44100 -oacopts ab="
+            formato1 = u'converted.avi" -ofps 23.976 -ovfirst -of avi -no-audio -ovc libxvid -ovcopts flags=+pass1,threads=2'
+            formato2 = u'converted.avi" -ofps 23.976 -ovfirst -of avi -ovc libxvid -oac libmp3lame -ovcopts flags=+pass2,threads=2,b='
+            bit2 = u"k -af lavrresample=srate=44100,pan=2:1:0:0:1:1:1:1:1:1:0:0:1,format=s16le -oacopts ab="
             format = u"avi"
 
         if self.combo_resolucion.GetSelection() == 0:
@@ -265,38 +267,40 @@ class AMPEclass(wx.Frame):
         if self.radio_160.Value == 1: audio = u"160k"
         if self.radio_192.Value == 1: audio = u"192k"
         
-        if platform.system() == 'Windows': mp2 = u"mplayer2.exe"
-        if platform.system() == 'Linux' : mp2 = u"mplayer2-lavc"
+        if platform.system() == 'Windows': mp2 = u"mpv2.exe"
+        if platform.system() == 'Linux' : mp2 = u"mpv-lavc"
         
         global encodear
         encodear = []
+        del encodear[:]
         global logfile
         logfile = []
+        del logfile[:]
         
         for i in range(len(paths)):
             paths[i] = paths[i].encode('utf-8')
             filenames[i] = filenames[i].encode('utf-8')
             #print paths[i]#
             #print filenames[i]#
-            input = paths[i]
+            infile = paths[i]
             output = paths[i][:-3]
             if combo_formato.GetSelection() == 1:
                 if platform.system() == 'Windows':
-                    encodear.append(u'"' + folderrun + u'\\bin\\' + mp2 + u'" "' + win32api.GetShortPathName(unicode(input,'utf-8')) + u'" -o "' + unicode(output,'utf-8') + formato1 + resolucion)
-                    encodear.append(u'"' + folderrun + u'\\bin\\' + mp2 + u'" "' + win32api.GetShortPathName(unicode(input,'utf-8')) + u'" -o "' + unicode(output,'utf-8') + formato2 + bitrate + bit2 + audio + resolucion)
+                    encodear.append(u'"' + folderrun + u'\\bin\\' + mp2 + u'" "' + win32api.GetShortPathName(unicode(infile,'utf-8')) + u'" -o "' + unicode(output,'utf-8') + formato1 + resolucion)
+                    encodear.append(u'"' + folderrun + u'\\bin\\' + mp2 + u'" "' + win32api.GetShortPathName(unicode(infile,'utf-8')) + u'" -o "' + unicode(output,'utf-8') + formato2 + bitrate + bit2 + audio + resolucion)
                     logfile.append(folderrun + u'\\logs\\' + unicode(filenames[i],'utf-8') + u'-to-' + format + u'.first_pass.log')
                     logfile.append(folderrun + u'\\logs\\' + unicode(filenames[i],'utf-8') + u'-to-' + format + u'.second_pass.log')
                 if platform.system() == 'Linux':
-                    encodear.append(u'"' + folderrun + u'/bin/' + mp2 + u'" "' + unicode(input,'utf-8') + u'" -o "' + unicode(output,'utf-8') + formato1 + resolucion)
-                    encodear.append(u'"' + folderrun + u'/bin/' + mp2 + u'" "' + unicode(input,'utf-8') + u'" -o "' + unicode(output,'utf-8') + formato2 + bitrate + bit2 + audio + resolucion)
+                    encodear.append(u'"' + folderrun + u'/bin/' + mp2 + u'" "' + unicode(infile,'utf-8') + u'" -o "' + unicode(output,'utf-8') + formato1 + resolucion)
+                    encodear.append(u'"' + folderrun + u'/bin/' + mp2 + u'" "' + unicode(infile,'utf-8') + u'" -o "' + unicode(output,'utf-8') + formato2 + bitrate + bit2 + audio + resolucion)
                     logfile.append(folderrun + u'/logs/' + unicode(filenames[i],'utf-8') + u'-to-' + format + u'.first_pass.log')
                     logfile.append(folderrun + u'/logs/' + unicode(filenames[i],'utf-8') + u'-to-' + format + u'.second_pass.log')
             else:
                 if platform.system() == 'Windows':
-                    encodear.append(u'"' + folderrun + u'\\bin\\' + mp2 + u'" "' + win32api.GetShortPathName(unicode(input,'utf-8')) + u'" -o "' + unicode(output,'utf-8') + formato + bitrate + bit2 + audio + resolucion)
+                    encodear.append(u'"' + folderrun + u'\\bin\\' + mp2 + u'" "' + win32api.GetShortPathName(unicode(infile,'utf-8')) + u'" -o "' + unicode(output,'utf-8') + formato + bitrate + bit2 + audio + resolucion)
                     logfile.append(folderrun + u'\\logs\\' + unicode(filenames[i],'utf-8') + u'-to-' + format + u'.log')
                 if platform.system() == 'Linux':
-                    encodear.append(u'"' + folderrun + u'/bin/' + mp2 + u'" "' + unicode(input,'utf-8') + u'" -o "' + unicode(output,'utf-8') + formato + bitrate + bit2 + audio + resolucion)
+                    encodear.append(u'"' + folderrun + u'/bin/' + mp2 + u'" "' + unicode(infile,'utf-8') + u'" -o "' + unicode(output,'utf-8') + formato + bitrate + bit2 + audio + resolucion)
                     logfile.append(folderrun + u'/logs/' + unicode(filenames[i],'utf-8') + u'-to-' + format + u'.log')
         global salir
         salir = False
@@ -308,17 +312,18 @@ class AMPEclass(wx.Frame):
 
     def OnAbout(self, e):
         description = u"""
-AMPE (Al_eXs MPlayer2 Encoder) es una Interfaz Gráfica de
+AMPE (Al_eXs MPlayer2/MPV Encoder) es una Interfaz Gráfica de
 Usuario(GUI) para encodear videos MKV, MP4 o AVI en MP4 o
 AVI compatibles con las consolas usando como fuente para
-encodear el MPlayer2.\n
+encodear el MPlayer2/MPV.\n
 Acepta estilos y enlaza los capitulos con
 Ordered Chapters Externos(Segment Linking).\n
+
 Agradecimientos:
--lachs0r por el build del mplayer2 para windows.
--ErunamoJAZZ(AnS) por su apoyo en mejorar mi codigo python.
--Batousay(BB) por su tip para las barras de progreso.
--Xibalba, Seposi, ZeroTheBest por probar las versiones betas.\n"""
+- Al equipo de desarrollo de MPV, fork del MPlayer/MPlayer2.
+- ErunamoJAZZ(AnS) por su apoyo en mejorar mi codigo python.
+- Batousay(BB) por su tip para las barras de progreso.
+- A todos los que probaron las betas.\n"""
         
         licence = u"""
 AMPE es un sofware libre; se puede redistribuir y/o modificar
@@ -352,7 +357,8 @@ pero SIN GARANTIA ALGUNA.\n"""
 class ConvertDialog(wx.Frame):
     def __init__(self, parent, *args, **kwds):
         # begin wxGlade: ConvertDialog.__init__
-        kwds["style"] = wx.CAPTION
+        kwds["style"] = wx.CAPTION | wx.MINIMIZE_BOX
+        kwds["pos"] = parent.GetPosition()
         wx.Frame.__init__(self, None, -1, title = u"  Convirtiendo", **kwds)
         self.label_1a = wx.StaticText(self, -1, u"Convirtiendo:")
         
@@ -406,12 +412,11 @@ class ConvertDialog(wx.Frame):
         sizer_1a.Add(sizer_2a, 0, wx.EXPAND, 0)
         self.SetSizer(sizer_1a)
         self.Layout()
-        self.Centre()
         # end wxGlade
     
     def OnCancel(self, e):
         if not button_cancel.Label == u"Cerrar":
-            global salir
+#            global salir
             salir = True
             enc = Encodeo(self)
             enc.stop()
@@ -439,37 +444,40 @@ class Encodeo(threading.Thread):
                 os.remove(logfile[i])
             except:
                 pass
+            print encodear[i]
             self.proceso = subprocess.Popen(encodear[i].encode('utf-8'), stdout = open(logfile[i], "a"), stderr = open(logfile[i], "a"), shell = True)
             if combo_formato.GetSelection() == 1:
-                label_capi.SetLabel(filenames[i/2])
+                wx.CallAfter(label_capi.SetLabel, filenames[i/2])
                 print filenames[i/2]
             else:
-                label_capi.SetLabel(filenames[i])
+                wx.CallAfter(label_capi.SetLabel, filenames[i])
                 print filenames[i]
             bars = Barras(self)
             bars.start()
             self.proceso.wait()
-            time.sleep(1)
+            time.sleep(2)
             if i == len(encodear)-1:
                 break
             i +=1
         try:
             if not salir:
-                label_capi.SetLabel(u" ")
+                wx.CallAfter(label_capi.SetLabel, u" ")
                 gauge_1a.SetValue(100)
                 gauge_2a.SetValue(100)
-                wx.MessageBox(u'Terminó la Conversión', 'Info', wx.OK | wx.ICON_INFORMATION)
+                wx.CallAfter(wx.MessageBox, u'Terminó la Conversión', u'Info', wx.OK | wx.ICON_INFORMATION)
             button_cancel.Label = u"Cerrar"
             button_minimize.Enable(False)
             Lista.Clear()
+            del paths[:]
+            del filenames[:]
         except:
             pass
     
     def stop(self):
         global salir
         salir = True
-        if platform.system() == 'Linux': self.kill = subprocess.Popen(u"killall mplayer2-lavc", shell = True)
-        if platform.system() == 'Windows': self.kill = subprocess.Popen(u"taskkill /F /IM mplayer2.exe", shell = True)
+        if platform.system() == 'Linux': self.kill = subprocess.Popen(u"killall mpv-lavc", shell = True)
+        if platform.system() == 'Windows': self.kill = subprocess.Popen(u"taskkill /F /IM mpv2.exe", shell = True)
 
        
 class Barras(threading.Thread):
@@ -478,7 +486,7 @@ class Barras(threading.Thread):
        
     def run(self):
         while True:
-            time.sleep(3)
+            time.sleep(2)
             prs = open(logfile[i], "r")
             for last in prs:
                 porcentaje = last
@@ -490,7 +498,7 @@ class Barras(threading.Thread):
                 b = a[1].split(u'%')
             except IndexError:
                 break
-            print '{0}\r'.format(b[0]),
+            print '{0}\r'.format(b[0])
             try:
                 if combo_formato.GetSelection() == 1:
                     gauge_2a.SetValue(float(b[0])+1)

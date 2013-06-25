@@ -1,4 +1,4 @@
-AMPE - Al_eXs' MPlayer2 Encoder
+AMPE - Al_eXs' MPlayer2/MPV Encoder
 
 Repositorio GIT:
 https://github.com/Al-eXs/AMPE
@@ -6,7 +6,7 @@ https://github.com/Al-eXs/AMPE
 =============================
 
 AMPE es una GUI(Graphic User Interface) para usar las opciones de encodeo
-del MPlayer2(www.mplayer2.org) que son mas faciles de usar que los
+del MP2ayer2/MPV que son mas faciles de usar que los
 ejecutables de cada formato como lo son el Xvid y el x264, ya que esos
 no incluyen algunas opciones como el juntar los Ordered Chapters Externos o
 Segment Linking de los MKV's, y tampoco tienen opciones de incrustar en
@@ -18,22 +18,23 @@ Contenido:
 
 AMPE:
  |-bin:
- |  |-mplayer:
- |  |    |-config               Configuración del MPlayer2
- |  |    |-subfont.ttf          Fuente por defecto
- |  |-mplayer2.exe              Ejecutable MPlayer2 para Windows
- |  |-mplayer2-lavc             Ejecutable MPlayer2 para Linux
- |  |-AMPE.exe                  Ejecutable del conversor
+ |  |-mpv2.exe                  Ejecutable MPV para Windows.
+ |  |-mpv-lavc                  Ejecutable MPV para Linux.
+ |  |-AMPE.exe                  Ejecutable del conversor.
  |-img:
- |  |-AMPE.ico                  Icono del ejecutable de Windows
- |  |-icon.ico                  Icono de la aplicación
- |  |-logo.png                  Logo
- |-logs:                        Carpeta para Logs de conversiones
- |-AMPE.exe                     Ejecutable de Windows
- |-AMPE                         Ejecutable de Linux
+ |  |-AMPE.ico                  Icono del ejecutable de Windows.
+ |  |-AMPE.png                  Imágen PNG del Icono.
+ |  |-icon.ico                  Icono de la aplicación.
+ |  |-logo.png                  Logo.
+ |-logs:                        Carpeta para Logs de conversiones.
+ |-AMPE.exe                     Ejecutable de Windows.
+ |-AMPE                         Ejecutable de Linux.
  |-README.txt                   Archivo Readme(este archivo)
  |-src:
  |  |-AMPE.py                   Codigo fuente del proyecto(en Python)
+                                (Para ejecutarlo desde consola se necesita Python,
+                                wxPython y para correr en Windows es necesario el
+                                módulo win32api de Python for Windows)
 
 =============================
 
@@ -82,9 +83,14 @@ Varsión 1.0.9:
  - Añadido Drag 'n Drop.
  - Corregido error en las barras de progreso.
  - Corregido error con resoluciones no estandar.
+ - Se recomprime y resamplea el Audio a 2 canales @ 44.1kHz para mejor compatibilidad
+   basado en el orden FL-FR-C-LFE-RL-RR, funciona bien en 2.0, 2.1, 3.0, 3.1, 5.0, 5.1, 7.0, 7.1
 
  
 Mejoras en proceso:
  -Configuración individual de los archivos.
+ -Drag 'n Drop en Linux.
+ -Imágenes en los menús en Windows.
+ -Archivo de lenguaje, para traducciones posteriores.
  -Bugfix que resulten.
 
