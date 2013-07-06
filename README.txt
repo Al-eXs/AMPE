@@ -20,11 +20,9 @@ AMPE:
  |-bin:
  |  |-mpv2.exe                  Ejecutable MPV para Windows.
  |  |-mpv-lavc                  Ejecutable MPV para Linux.
- |  |-AMPE.exe                  Ejecutable del conversor.
  |-img:
- |  |-AMPE.ico                  Icono del ejecutable de Windows.
+ |  |-AMPE.ico                  Icono de la aplicación
  |  |-AMPE.png                  Imágen PNG del Icono.
- |  |-icon.ico                  Icono de la aplicación.
  |  |-logo.png                  Logo.
  |-logs:                        Carpeta para Logs de conversiones.
  |-AMPE.exe                     Ejecutable de Windows.
@@ -34,12 +32,12 @@ AMPE:
  |  |-AMPE.py                   Codigo fuente del proyecto(en Python)
                                 (Para ejecutarlo desde consola se necesita Python,
                                 wxPython y para correr en Windows es necesario el
-                                módulo win32api de Python for Windows)
+                                módulo win32api de Python para Windows)
 
 =============================
 
 No necesita instalación, esta pensado en ser usable en todos los sistemas
-Windows y *nix aún sin Python, y asi sea fácil de ejecutar.
+Windows y *nix aún sin Python y/o wxWidgets, y asi sea fácil de ejecutar.
 
 =============================
 
@@ -65,11 +63,11 @@ Versión 1.0.4:
  - Cola de encodeo para todos los items de la lista.
  - Cancelado correcto del proceso de encodeo.
  
-Versió.0.5:
+Versión 1.0.5:
  - Nuevo cuadro de diálogo con la información de progreso.
  - Se oculta la ventana principal.
  
-Versió.0.6:
+Versión 1.0.6:
  - Al cancelar se puede regresar a la ventana principal a modificar opciones encodear la misma lista.
  
 Versión 1.0.7:
@@ -79,18 +77,24 @@ Versión 1.0.8:
  - Añadido encodeo a 2 pasadas en AVI.
  - Modificado la visualización de las barras de progreso.
  
-Varsió.0.9:
- - Añadido Drag 'n Drop.
+Versión 1.0.9:
+ - Añadido Drag 'n Drop(Windows)
  - Corregido error en las barras de progreso.
  - Corregido error con resoluciones no estandar.
  - Se recomprime y resamplea el Audio a 2 canales @ 44.1kHz para mejor compatibilidad
    basado en el orden FL-FR-C-LFE-RL-RR, funciona bien en 2.0, 2.1, 3.0, 3.1, 5.0, 5.1, 7.0, 7.1
 
- 
+Versión 1.0.10:
+ - De vuelta a mostrar la consola por incompatibilidades.
+ - Cambio en el Combo de selección de Resolución.
+ - Fix para nombres unicode en Windows, acentos y kanjis ya no dan problemas.
+   
+   
+   
 Mejoras en proceso:
- -Configuracióndividual de los archivos.
+ -Configuración ividual de los archivos.
  -Drag 'n Drop en Linux.
- -Imánes en los menús en Windows.
+ -Imágenes en los menús en Windows.
  -Archivo de lenguaje, para traducciones posteriores.
  -Bugfix que resulten.
 
