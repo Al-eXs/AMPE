@@ -42,7 +42,7 @@ class AMPEclass(wx.Frame):
         self.quit = wxglade_tmp_menu.Append(wx.ID_EXIT, u'&Salir\tCtrl+Q', u'Salir de AMPE')
         self.Menu.Append(wxglade_tmp_menu, u"Ar&chivo")
         wxglade_tmp_menu = wx.Menu()
-        self.optns = wxglade_tmp_menu.Append(wx.ID_PROPERTIES, u"&Opciones\F8", "", wx.ITEM_NORMAL)
+        self.optns = wxglade_tmp_menu.Append(wx.ID_PROPERTIES, u"&Opciones\tF8", "", wx.ITEM_NORMAL)
         wxglade_tmp_menu.AppendSeparator()
         self.logdel = wxglade_tmp_menu.Append(wx.ID_CLEAR, u"&Borrar Logs\tF12", "Borra todo", wx.ITEM_NORMAL)
         self.Menu.Append(wxglade_tmp_menu, u"&Herramientas")
