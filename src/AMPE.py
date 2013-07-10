@@ -465,7 +465,10 @@ class Encodeo(threading.Thread):
             except:
                 pass
             stdout.write('\n\n')
-            print encodear[ii].encode('cp1252')
+            try:
+                print encodear[ii].encode('cp1252')
+            except:
+                print encodear[ii].encode('utf-8')
             self.proceso = Popen(encodear[ii].encode('utf-8'), stdout = open(logfile[ii], "a"), stderr = open(logfile[ii], "a"), shell = True)
             if combo_formato.GetSelection() == 1:
                 wx.CallAfter(label_capi.SetLabel, filenames[ii/2])
@@ -540,7 +543,7 @@ class Barras(threading.Thread):
                 porcentaje = last
             porcentaje = str(porcentaje)
 #            print porcentaje[-80:-10]
-            a = porcentaje[-80:-10].split(u'{')
+            a = porcentaje[-80:-10].split(u'(')
 #            print a
             try:
                 b = a[1].split(u'%')

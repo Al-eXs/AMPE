@@ -41,6 +41,23 @@ Windows y *nix aún sin Python y/o wxWidgets, y asi sea fácil de ejecutar.
 
 =============================
 
+Para ejecutarlo desde el código fuente(.py) es necesario tener instalado:
+ - Python 2.7 
+   http://www.python.org/ftp/python/2.7.5/python-2.7.5.msi
+ - wxPython 2.8 o superior
+   http://downloads.sourceforge.net/wxpython/wxPython2.8-win32-unicode-2.8.12.1-py27.exe
+ - En el caso de Windows se necesita win32api para python
+   http://sourceforge.net/projects/pywin32/files/pywin32/Build%20218/pywin32-218.win32-py2.7.exe/download
+ 
+Se debe copiar AMPE.py a la carpeta raiz y ejecutar con Python desde ahí.
+
+=============================
+
+Cualquier cambio, mejora o sugerencia serán bienvenidas en
+https://github.com/Al-eXs/AMPE/issues
+
+=============================
+
 Changelog:
 
 Versión 1.0.0:
