@@ -106,7 +106,7 @@ Versión 1.0.10:
 
 Versión 1.1.0:
  - Cambiada estructura interna del programa, ahora usa PySide en vez de wxWidgets
- - Las barras de progreso se agregaron a la barra de estado del programa, eliminandi la necesidad
+ - Las barras de progreso se agregaron a la barra de estado del programa, eliminando la necesidad
    de una ventana aparte para mostrarlas.
  - Las opciones de audio ahora son para elegir entre Stereo(2 canales) y 5.1(6 canales) para la
    conversión en MP4, para AVI solo hay opción de audio Stereo(2 canales) por limitaciones del
