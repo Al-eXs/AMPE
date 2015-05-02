@@ -1,4 +1,4 @@
-﻿AMPE - Al_eXs' MPV Encoder
+﻿AMPE - Al_eXs MPV Encoder
 
 Repositorio GIT:
 https://github.com/Al-eXs/AMPE
