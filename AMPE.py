@@ -201,8 +201,13 @@ class AMPEapp(QMainWindow):
 		# Widgets Properties
 		self.pbar1.setMinimum(0)
 		self.pbar1.setMaximum(100)
+		self.pbar1.setAlignment(Qt.AlignCenter)
+		self.pbar1.setTextVisible(True)
+		self.pbar1.setFormat(u'Archivo %p%')
 		self.pbar2.setMinimum(0)
 		self.pbar2.setMaximum(100)
+		self.pbar2.setAlignment(Qt.AlignCenter)
+		self.pbar2.setFormat(u'Total %p%')
 		self.comboFormat.addItem(u'MP4')
 		self.comboFormat.addItem(u'AVI')
 		self.comboRes.addItem(u'Mantener Original')
