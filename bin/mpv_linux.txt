@@ -1,0 +1,3 @@
+Instalar la versión mas reciente de MPV desde los repositorios o compilarla usando el source de git:
+
+https://github.com/mpv-player/mpv-build

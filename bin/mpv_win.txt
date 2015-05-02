@@ -1,0 +1,3 @@
+Descargar el build de MPV para Windows y extraer en AMPE/bin/
+
+http://mpv.srsfckn.biz/mpv-i686-20150428.7z
