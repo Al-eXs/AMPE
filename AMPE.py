@@ -370,8 +370,8 @@ class AMPEapp(QMainWindow):
 					logfile.append(folderrun + u'\\logs\\' + unicode(filenames[i], 'utf-8') + u'-to-' + format + u'.pass1.log')
 					logfile.append(folderrun + u'\\logs\\' + unicode(filenames[i], 'utf-8') + u'-to-' + format + u'.pass2.log')
 				if system() == 'Linux':
-					encodes.append(mpv + u' "' + unicode(infile, 'utf-8') + u' -o "' + unicode(output, 'utf-8') + format1 + resol)
-					encodes.append(mpv + u' "' + unicode(infile, 'utf-8') + u' -o "' + unicode(output, 'utf-8') + format2 + bit1 + bit2 + chan + resol)
+					encodes.append(mpv + u' "' + unicode(infile, 'utf-8') + u'" -o "' + unicode(output, 'utf-8') + format1 + resol)
+					encodes.append(mpv + u' "' + unicode(infile, 'utf-8') + u'" -o "' + unicode(output, 'utf-8') + format2 + bit1 + bit2 + chan + resol)
 					logfile.append(folderrun + u'/logs/' + unicode(filenames[i], 'utf-8') + u'-to-' + format + u'.pass1.log')
 					logfile.append(folderrun + u'/logs/' + unicode(filenames[i], 'utf-8') + u'-to-' + format + u'.pass2.log')
 			else:
