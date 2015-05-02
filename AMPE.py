@@ -36,7 +36,7 @@ class BarWork(QThread):
 			try:
 				b = a[1].split(u'%')
 			except IndexError:
-				break
+				pass
 			try:
 				if self.parent.comboFormat.currentIndex() == 1:
 					c = float(b[0])/(2*len(filenames))
@@ -95,7 +95,6 @@ class EncodeWork(QThread):
 			if ii == (len(encodes) - 1):
 				break
 			ii += 1
-		self.parent.bars.quit()
 		if not stopConvert:
 			self.setBtn.emit(u'ok')
 		else:
@@ -328,12 +327,12 @@ class AMPEapp(QMainWindow):
 		self.convertBtn.setDisabled(True)
 		self.onLock()
 		if self.comboFormat.currentIndex() == 0:
-			format1 = u'_converted.mp4" -ofps 23.976 -ovfirst -ovc libx264 -ovcopts preset=medium,profile=high,crf='
+			format1 = u'_converted.mp4" -oautofps -ovfirst -ovc libx264 -ovcopts preset=medium,profile=high,level=40,crf='
 			bit2 = u' --audio-channels='
 			format = u'mp4'
 		elif self.comboFormat.currentIndex() == 1:
-			format1 = u'_converted.avi" -ofps 23.976 -ovfirst -of avi -no-audio -ovc libxvid -ovcopts flags=+pass1,threads=4'
-			format2 = u'_converted.avi" -ofps 23.976 -ovfirst -of avi -ovc libxvid -oac libmp3lame -ovcopts flags=+pass2,threads=4,b='
+			format1 = u'_converted.avi" -oautofps -ovfirst -of avi -no-audio -ovc libxvid -ovcopts flags=+pass1,threads=4'
+			format2 = u'_converted.avi" -oautofps -ovfirst -of avi -ovc libxvid -oac libmp3lame -ovcopts flags=+pass2,threads=4,b='
 			bit2 = u'k -oacopts ab=192k -srate=44100 --audio-channels='
 			format = u'avi'
 		if self.comboRes.currentIndex() == 0:
@@ -409,12 +408,13 @@ class AMPEapp(QMainWindow):
 		self.delAction.setDisabled(False)
 		self.delBtn.setDisabled(False)
 		self.delLogsAction.setDisabled(False)
-		self.comboAudio.setDisabled(False)
+		if self.comboFormat.currentIndex() == 0: self.comboAudio.setDisabled(False)
 		self.comboFormat.setDisabled(False)
 		self.comboRes.setDisabled(False)
 		self.spin.setDisabled(False)
 		self.slid.setDisabled(False)
 	def onBtn(self, e):
+		self.bars.quit()
 		self.convert.quit()
 		self.onUnlock()
 		self.list.clear()
@@ -430,8 +430,8 @@ class AMPEapp(QMainWindow):
 		elif e == u'not':
 			QMessageBox.information(self, u'Info', u'Se canceló la conversión.')
 	def onProgress(self, progress1, progress2):
-		self.pbar2.setValue(progress1)
-		self.pbar1.setValue(progress2)
+		self.pbar1.setValue(progress1)
+		self.pbar2.setValue(progress2)
 	def onLbl(self, text):
 		self.statusLabel.setText(text)
 	def onStop(self):
