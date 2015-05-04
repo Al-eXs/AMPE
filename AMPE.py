@@ -457,7 +457,6 @@ class AMPEapp(QMainWindow):
 		self.pbar2.setValue(0)
 		self.pbar1.setValue(0)
 	def onOpen(self):
-		#self.select = self.list.selected()
 		files, nul = QFileDialog.getOpenFileNames(self, u'Agregar un Archivo de Video', u'', u'Video (*.mkv; *.mp4; *.avi);;MKV (*.mkv);;MP4 (*.mp4);;AVI (*.avi)')
 		for index in range(len(files)):
 			path, filename = os.path.split(files[index])
@@ -469,7 +468,7 @@ class AMPEapp(QMainWindow):
 			self.delAction.setDisabled(False)
 			self.delBtn.setDisabled(False)
 			self.convertBtn.setDisabled(False)
-			self.list.setCurrentItem(0)
+			self.list.setCurrentRow(0)
 	def onDel(self):
 		self.list.takeItem(self.list.currentRow())
 		del filenames[self.list.currentRow()]
@@ -574,9 +573,9 @@ Agradecimientos:<br/>
 	def onLicence(self):
 		licence = u"""
 <b>Licencia</b><br/><br/>
-AMPE es un sofware libre; se puede redistribuir y/o modificar
-bajo los terminos de la Licencia Publica General GNU Version 3.
-AMPE es distribuido con la esperanza de ser un software util
+AMPE es un sofware libre; se puede redistribuir y/o modificar<br/>
+bajo los terminos de la <a href="COPYING.txt">Licencia Publica General GNU Version 3</a>.<br/>
+AMPE es distribuido con la esperanza de ser un software util<br/>
 pero SIN GARANTIA ALGUNA."""
 		QMessageBox.about(self, u'Licencia', licence)
 	
