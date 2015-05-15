@@ -313,7 +313,7 @@ class AMPEapp(QMainWindow):
 		self.pbar1.setValue(0)
 		self.pbar2.setValue(0)
 		self.setStatusBar(self.statBar)
-		# Show Window			
+		# Show Window
 		self.show()
 	
 	def closeEvent(self, event):
@@ -581,5 +581,6 @@ pero SIN GARANTIA ALGUNA."""
 	
 if __name__ == '__main__':
 	app = QApplication(sys.argv)
+	if system() == 'Linux': app.setStyle(QGtkStyle())
 	amp = AMPEapp()
 	sys.exit(app.exec_())
