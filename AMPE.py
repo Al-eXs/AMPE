@@ -28,24 +28,27 @@ class BarWork(QThread):
 	def run(self):
 		while True:
 			sleep(2)
-			prs = open(logfile[ii], 'r')
-			for last in prs:
-				prs2 = last
-			prs2 = str(prs2)
-			a = prs2[-80:-10].split(u'(')
 			try:
-				b = a[1].split(u'%')
-			except IndexError:
-				pass
-			try:
-				if self.parent.comboFormat.currentIndex() == 1:
-					c = float(b[0])/(2*len(filenames))
-					self.setProg.emit(float(b[0])+1, c+(50*ii/len(filenames))+1)
-				else:
-					c = float(b[0])/(len(filenames))
-					self.setProg.emit(float(b[0])+1, c+(100*ii/len(filenames))+1)
+				prs = open(logfile[ii], 'r')
+				for last in prs:
+					prs2 = last
+				prs2 = str(prs2)
+				a = prs2[-80:-10].split(u'(')
+				try:
+					b = a[1].split(u'%')
+				except IndexError:
+					pass
+				try:
+					if self.parent.comboFormat.currentIndex() == 1:
+						c = float(b[0])/(2*len(filenames))
+						self.setProg.emit(float(b[0])+1, c+(50*ii/len(filenames))+1)
+					else:
+						c = float(b[0])/(len(filenames))
+						self.setProg.emit(float(b[0])+1, c+(100*ii/len(filenames))+1)
+				except:
+					break
 			except:
-				break
+				pass
 
 class EncodeWork(QThread):
 	setBtn = Signal(str)
@@ -115,9 +118,11 @@ class AMPEapp(QMainWindow):
 		super(AMPEapp, self).__init__()
 		self.initUI()
 		
-		global filenames, paths
+		global filenames, paths, encodes, logfile
 		filenames = []
 		paths = []
+		encodes = []
+		logfile = []
 		
 	def initUI(self):
 		# Menu Actions
@@ -294,7 +299,6 @@ class AMPEapp(QMainWindow):
 		self.form = QWidget()
 		self.form.setLayout(self.vbox)
 		self.setCentralWidget(self.form)
-
 		# Window settings
 		self.setAcceptDrops(True)
 		self.setFixedSize(600,550)
@@ -331,6 +335,9 @@ class AMPEapp(QMainWindow):
 	def onConvert(self):
 		self.convertBtn.setDisabled(True)
 		self.onLock()
+		if system() == 'Windows': mpv = folderrun + u'\\bin\\mpv.exe'
+		if system() == 'Linux': mpv = u'mpv'
+		bit1 = str(self.spin.value())
 		if self.comboFormat.currentIndex() == 0:
 			format1 = u'_converted.mp4" -oautofps -ovfirst -ovc libx264 -ovcopts preset=medium,profile=high,level=40,crf='
 			bit2 = u' --audio-channels='
@@ -343,9 +350,9 @@ class AMPEapp(QMainWindow):
 		if self.comboRes.currentIndex() == 0:
 			resol = u' -vf scale=-1:-10'
 		elif self.comboRes.currentIndex() == 1:
-			resol = u' -vf scale=-10:' + self.resVal.value() + u':-10'
+			resol = u' -vf scale=-10:' + self.resVal.text()
 		elif self.comboRes.currentIndex() == 2:
-			resol = u' -vf scale=' + self.resVal.value() + u':-10'
+			resol = u' -vf scale=' + self.resVal.text() + u':-10'
 		elif self.comboRes.currentIndex() == 3:
 			resol = u' -vf scale=720:400'
 		elif self.comboRes.currentIndex() == 4:
@@ -354,20 +361,14 @@ class AMPEapp(QMainWindow):
 			resol = u' -vf scale=848:480'
 		elif self.comboRes.currentIndex() == 6:
 			resol = u' -vf scale=640:480'
-		bit1 = str(self.spin.value())
 		if self.comboAudio.currentIndex() == 0: chan = u'2'
 		if self.comboAudio.currentIndex() == 1: chan = u'6'
-		if system() == 'Windows': mpv = folderrun + u'\\bin\\mpv.exe'
-		if system() == 'Linux': mpv = u'mpv'
-		global encodes, logfile
-		encodes = []
-		logfile = []
-		for i in range(len(paths)):
+		for i in range(len(filenames)):
 			paths[i] = paths[i].encode('utf-8')
 			filenames[i] = filenames[i].encode('utf-8')
 			infile = paths[i]
 			output = paths[i][:-4]
-			if self.comboFormat.currentIndex() == 1:
+			if format == u'avi':
 				if system() == 'Windows':
 					encodes.append(mpv + u' "' + GetShortPathName(unicode(infile, 'utf-8')) + u'" -o "' + folderrun + u'\\logs\\output' + str(i) + format1 + resol)
 					encodes.append(mpv + u' "' + GetShortPathName(unicode(infile, 'utf-8')) + u'" -o "' + folderrun + u'\\logs\\output' + str(i) + format2 + bit1 + bit2 + chan + resol)
@@ -395,7 +396,6 @@ class AMPEapp(QMainWindow):
 		self.convert.setBtn.connect(self.onBtn)
 		self.convert.setLbl.connect(self.onLbl)
 		self.convert.start()
-
 	def onLock(self):
 		self.openAction.setDisabled(True)
 		self.openBtn.setDisabled(True)
@@ -425,6 +425,8 @@ class AMPEapp(QMainWindow):
 		self.list.clear()
 		del paths[:]
 		del filenames[:]
+		del encodes[:]
+		del logfile[:]
 		self.pbar2.setValue(0)
 		self.pbar1.setValue(0)
 		self.stopBtn.setDisabled(True)
@@ -444,6 +446,8 @@ class AMPEapp(QMainWindow):
 		enc.stop()
 		del paths[:]
 		del filenames[:]
+		del encodes[:]
+		del logfile[:]
 	def onFinish(self):
 		self.stopBtn.setDisabled(True)
 		self.delAction.setDisabled(True)
@@ -453,6 +457,8 @@ class AMPEapp(QMainWindow):
 		self.list.clear()
 		del paths[:]
 		del filenames[:]
+		del encodes[:]
+		del logfile[:]
 		QMessageBox.information(self, u'Info', u'Terminó la conversión.')
 		self.pbar2.setValue(0)
 		self.pbar1.setValue(0)
