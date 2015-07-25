@@ -27,7 +27,6 @@ AMPE:
  |-logs:						Carpeta para Logs de conversiones.
  |-README.txt					Archivo Readme(este archivo)
  |-AMPE.exe						Ejecutable de Windows.
- |-AMPE-nc.exe					Para ejecutar AMPE sin la consola de comandos visible(.vbs)
  |-AMPE.py						Codigo fuente del proyecto(en Python)
 								Usuarios de Linux, pueden ejecutarlo directamente
 								desde consola, solo se necesita correr en Python2
@@ -112,6 +111,9 @@ Versión 1.1.0:
    conversión en MP4, para AVI solo hay opción de audio Stereo(2 canales) por limitaciones del
    codec MP3. Se resamplea a 44100 KHz para la conversión a AVI y se deja que el programa de
    conversión decida el mejor modo de hacer el Downmix al elegir audio Stereo.
+
+Versión  1.1.1:
+ - Corregido fallo de cuadro de texto para especificar la resolución.
 
 =============================
 

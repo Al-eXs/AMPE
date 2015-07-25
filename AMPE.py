@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
-version = u'1.1.0'
+version = u'1.1.1'
 
 import os, sys
 from subprocess import Popen
