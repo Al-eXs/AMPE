@@ -335,7 +335,7 @@ class AMPEapp(QMainWindow):
 	def onConvert(self):
 		self.convertBtn.setDisabled(True)
 		self.onLock()
-		if system() == 'Windows': mpv = folderrun + u'\\bin\\mpv.exe'
+		if system() == 'Windows': mpv = u'"' + folderrun + u'\\bin\\mpv.exe"'
 		if system() == 'Linux': mpv = u'mpv'
 		bit1 = str(self.spin.value())
 		if self.comboFormat.currentIndex() == 0:

@@ -27,6 +27,8 @@ AMPE:
  |-logs:						Carpeta para Logs de conversiones.
  |-README.txt					Archivo Readme(este archivo)
  |-AMPE.exe						Ejecutable de Windows.
+ |-AMPE.vbs						Script para ejecutar AMPE sin la consola (Dirty VBScript solution)
+ |-AMPE-nc.exe					Exe autoextraíble que ejecuta AMPE.vbs
  |-AMPE.py						Codigo fuente del proyecto(en Python)
 								Usuarios de Linux, pueden ejecutarlo directamente
 								desde consola, solo se necesita correr en Python2
