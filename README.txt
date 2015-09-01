@@ -117,6 +117,9 @@ Versión 1.1.0:
 Versión  1.1.1:
  - Corregido fallo de cuadro de texto para especificar la resolución.
 
+Versión  1.1.2:
+ - Corregido fallos de Paths y al momento de detener la conversión.
+
 =============================
 
 Mejoras en proceso:

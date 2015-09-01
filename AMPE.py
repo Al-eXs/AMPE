@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
-version = u'1.1.1'
+version = u'1.1.2'
 
 import os, sys
 from subprocess import Popen
@@ -444,6 +444,7 @@ class AMPEapp(QMainWindow):
 	def onStop(self):
 		enc = EncodeWork(self)
 		enc.stop()
+		sleep(3)
 		del paths[:]
 		del filenames[:]
 		del encodes[:]
